@@ -1,0 +1,137 @@
+@import 'config.less';
+@import 'icons.less';
+@image-height:768px;
+@container-left-right-padding:5em;
+@about-theme-color:goldenrod;
+
+.hotel-variants{
+    background-color: @theme-color;
+}
+
+.rooms{
+    margin:0 auto;
+    padding:0;
+    width: @content-width;
+    height: @image-height;
+    display: grid;
+    color:@text-color;
+}
+
+.room-info:hover{
+    opacity:1;
+}
+
+.hotel-room .room-content{
+    height:100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.service-item{
+    display: grid;
+    grid-template-columns: @standard-icon-size*2 1fr;
+    gap:1em;
+}
+
+.service-name{
+    align-self: center;
+}
+
+.service-collection p{
+    margin:0;
+}
+
+.room-info{
+    display: flex;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    height:@image-height;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+}
+
+.select-panel{
+    width:@content-width;
+    margin:0 auto;
+}
+
+.select-buttons{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.select-group{
+    padding: 35px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: all 1s ease-in;
+    color:@form-color;
+}
+
+.select-group a{
+    color:@form-color;
+    font-size: 1.5em;
+    font-weight: 600;
+    transition: all 0.25s ease-in;
+}
+
+.select-group:hover,.active{
+    background-color: @form-color;
+    color:@body-color;
+    a{
+        color:@body-color;
+    }
+}
+
+.about-booking-form-container{
+    .container{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        width:(@content-width)-(@container-left-right-padding*2);
+        margin:0 auto;
+        padding:3em @container-left-right-padding 2em;
+        text-align: center;
+        color:@theme-color;
+    }
+
+    .golden-text{
+        color:@about-theme-color;
+        letter-spacing: 10px;
+    }
+
+    .bold-big-text{
+        font-weight: 700;
+        font-size: 30pt;
+    }
+
+    .paragraph{
+        margin-bottom:1em
+    }
+
+    .description{
+        line-height:1.5em;
+        font-family: @sans-family-font;
+        color:#666;
+        margin-bottom:2em;
+        width:645px;
+    }
+
+    .company-info{
+        font-family: @sans-family-font;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+    }
+
+    .number{
+        font-size: 30pt;
+        color:@about-theme-color;
+    }
+
+    .company-info>*{
+        padding:0 2em;
+        border-right:.1em solid @theme-color;
+    }
+}

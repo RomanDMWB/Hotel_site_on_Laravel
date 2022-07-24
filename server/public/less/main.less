@@ -1,0 +1,50 @@
+@import 'config.less';
+@import 'icons.less';
+
+body{
+    padding: 0;
+    margin: 0;
+    background-color: @body-color;
+    font-family: "Roboto", "Arial", sans-serif;
+    // color:@text-color;
+}
+
+li{
+    list-style-type: none;
+}
+
+ul{
+    padding: 0;
+}
+
+a,a:active{
+    color:@link-text-color;
+    text-decoration: none;
+}
+a:hover{
+    color:@text-hover-color;
+}
+
+.btn{
+    padding: @btn-top-bottom-padding @btn-left-right-padding;
+    background-color:@theme-color;
+    color:@link-text-color;
+}
+
+.btn:hover{
+    background-color: @hover-btn-back;
+    color:@text-hover-color;
+}
+table{
+    background-color: @theme-color;
+}
+
+td,th{
+    padding:1em;
+    background-color: @body-color;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+}
