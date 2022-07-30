@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel</title>
+    <title>Administration</title>
     <link rel="stylesheet" type="text/less" href="{{ url('less/navbar.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/welcome.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/main.less') }}">

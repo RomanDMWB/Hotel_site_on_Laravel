@@ -1,5 +1,5 @@
 <?php header("Content-Type: text/html; charset=utf-8"); ?>
-@extends('layouts.main_page_layout')
+@extends('layouts.admin_page_layout')
 
 @section('content')
 @if(session('status'))

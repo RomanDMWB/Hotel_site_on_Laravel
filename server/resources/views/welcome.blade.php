@@ -111,7 +111,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Booking">
+                <input type="submit" value="BOOKING NOW">
             </div>
         </form>
     </div>
