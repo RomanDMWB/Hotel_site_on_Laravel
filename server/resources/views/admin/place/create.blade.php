@@ -7,7 +7,7 @@
     @csrf
     <div class="form-group">
         <label>Place Number</label>
-        <input type="text" required name="place_number" class="form-control">
+        <input type="number" required name="place_number" class="form-control">
     </div>
     <div class="form-group">
         <label>Room Type</label>

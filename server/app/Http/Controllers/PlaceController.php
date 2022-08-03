@@ -27,7 +27,7 @@ class PlaceController extends Controller
     public function add(PlaceCreateRequest $request){
         $error = $this->checkError($request);
         if($error)
-            return response()->json($error,402);
+            return back()->withErrors(['error'=> $error]);
         $is_occupied = !!$request->occupied;
         $room_type = $this->database->getReference('rooms')->getChild($request->room_type)->getValue();
         $createData = [

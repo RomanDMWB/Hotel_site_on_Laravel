@@ -1,0 +1,28 @@
+@import 'config.less';
+
+.ticket-container{
+    width:25em;
+    margin:3em auto 0;
+    box-shadow: 0 0 1px black;
+    display: flex;
+    flex-direction: column;
+    padding:0 0 1em;
+    
+    .content{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    p:nth-child(2n-1){
+        font-weight: 600;
+    }
+
+    a{
+        padding:1em;
+        background:@form-color;
+        color:@body-color;
+        text-align: center;
+        width:auto;
+        margin-top:1em
+    }
+}

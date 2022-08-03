@@ -2,8 +2,10 @@
 @import 'icons.less';
 @image-height:768px;
 @container-left-right-padding:5em;
-@about-theme-color:goldenrod;
+@header-text-color:goldenrod;
+@room-header-height:1em;
 
+// Room Pages Style
 .hotel-variants{
     background-color: @theme-color;
 }
@@ -17,15 +19,44 @@
     color:@text-color;
 }
 
-.room-info:hover{
-    opacity:1;
+.room-header{
+    text-align: center;
 }
 
-.hotel-room .room-content{
-    height:100%;
-    display: flex;
-    justify-content: space-around;
+.room-header-text{
+    color:@text-color;
+    text-transform:uppercase;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.room-info{
+    display:flex;
+    height: @image-height;
     flex-direction: column;
+    align-items: center;
+    transition: all 1s ease;
+    background: linear-gradient(rgba(0,0,0,0.2),transparent);
+}
+
+.room-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    transition: all 1s ease;
+    height:0;
+    opacity: 0;
+}
+
+.hotel-room:hover{
+    .room-info{
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .room-content{
+        height:(@image-height)-56px;
+        opacity: 1;
+    }
 }
 
 .service-item{
@@ -42,15 +73,7 @@
     margin:0;
 }
 
-.room-info{
-    display: flex;
-    justify-content: center;
-    background: rgba(0,0,0,0.5);
-    height:@image-height;
-    transition: opacity 0.5s ease;
-    opacity: 0;
-}
-
+// Select Buttons Style
 .select-panel{
     width:@content-width;
     margin:0 auto;
@@ -85,6 +108,7 @@
     }
 }
 
+// About & Booking Containers Style
 .about-booking-form-container{
     .container{
         display:flex;
@@ -98,7 +122,7 @@
     }
 
     .golden-text{
-        color:@about-theme-color;
+        color:@header-text-color;
         letter-spacing: 10px;
     }
 
@@ -107,6 +131,7 @@
         font-size: 30pt;
     }
 
+    // About Container Style
     .paragraph{
         margin-bottom:1em
     }
@@ -127,7 +152,7 @@
 
     .number{
         font-size: 30pt;
-        color:@about-theme-color;
+        color:@header-text-color;
     }
 
     .company-info>*{
@@ -135,12 +160,41 @@
         border-right:.1em solid @theme-color;
     }
 
+    // Booking Container Style
     .booking-container{
         text-transform:uppercase;
 
         form{
             display:flex;
             flex-direction: row;
+            align-items: center;
+        }
+
+        label{
+            margin-left:1em;
+        }
+
+        input{
+            border:rgb(133, 133, 133) solid 1px;
+        }
+
+        input[type='submit']{
+            background-color: @header-text-color;
+            padding: 16px;
+            color:@body-color;
+            font-weight: 600;
+            border: none;
+            transition: color 1s ease;
+            transition: background-color 1s ease;
+            vertical-align: center;
+            margin-left:1em;
+        }
+        
+        input[type='submit']:hover{
+            color: @header-text-color;
+            background-color:@body-color;
+            border:@header-text-color solid 1px;
+            padding:15px;
         }
     }
 
@@ -148,5 +202,4 @@
         font-size:30pt;
         margin-bottom:1em;
     }
-
 }

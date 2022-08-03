@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/less" href="{{ url('less/navbar.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/welcome.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/main.less') }}">
+    <link rel="icon" href="{{ url('images/site-icon.ico') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>

@@ -9,6 +9,7 @@ use App\Http\Controllers\PlaceController;
 
 Route::get('/', [WelcomeController::class,'show']);
 Route::post('booking',[BookingController::class,'create']);
+Route::get('booking/{id}',[BookingController::class,'show']);
 
 Route::post('admin/room/add',[RoomController::class,'add']);
 Route::get('admin/room',[RoomController::class,'show']);

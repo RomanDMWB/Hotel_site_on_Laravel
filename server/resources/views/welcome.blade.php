@@ -8,8 +8,10 @@
         @foreach($rooms as $key => $item)
         <li class="hotel-room" style="background-image:url('{{ $item['image'] }}')">
             <div class="room-info">
+                <div class="room-header">
+                    <p class='room-header-text'>{{ $item['name'] }}</p>
+                </div>
                 <div class="room-content">
-                    <h4>{{ $item['name'] }}</h4>
                     <div class="services">
                         <h4>Services:</h4>
                         @if($item['services'])
@@ -32,7 +34,7 @@
         </li>
         @endforeach
         @else
-        <h4>Изините, комнат нет</h4>
+        <h4>Sorry, rooms not found</h4>
         @endif
     </ul>
 </div>
@@ -81,28 +83,34 @@
         <div class="heading">
             Booking your perfect room
         </div>
-        <form action="" method="post">
+        @if($errors->any())
+            <div class="error-text">
+                {{ implode('', $errors->all(':message')) }}
+            </div>
+        @endif
+        <form action="{{ url('booking') }}" method="post">
+            @csrf
             <div class="form-group">
                 <label for="">Arrival Date</label>
-                <input type="date" name='date'>
+                <input type="date" name='arrival_date' required placeholder="Select Date" min="<?php echo date ('Y-m-d'); ?>">
             </div>
             <div class="form-group">
                 <label for="">Night Count</label>
-                <input type="number" max='30' min='0' name='nights_count'>
+                <input type="number" max='30' min='0' required name='night_count' value="0">
             </div>
             <div class="form-group">
                 <label for="">Adults</label>
-                <input type="number" max='5' min='0' name='adults_count'>
+                <input type="number" max='5' min='0' required name='adult_count' value="0">
             </div>
             <div class="form-group">
                 <label for="">Kids</label>
-                <input type="number" max='5' min='0' name='kids_count'>
+                <input type="number" max='5' min='0' required name='child_count' value="0">
             </div>
             <div class="form-group">
                 <label for="">Room Type</label>
-                <select name="serviceId">
-                    @if($services)
-                    @foreach($services as $key=>$item)
+                <select name="room_type" required>
+                    @if($rooms)
+                    @foreach($rooms as $key=>$item)
                     <option value="{{ $key }}">{{ $item['name'] }}</option>
                     @endforeach
                     @else
