@@ -30,8 +30,8 @@ class ServiceController extends Controller
         ];
         $addData = $this->database->getReference($this->tablename)->push($createData);
         if($addData)
-        return redirect('admin/service')->with('status','Service Added Successfully');
+        return redirect('admin/services')->with('status','Service Added Successfully');
         else
-        return redirect('admin/service')->with('status','Service Not Added');
+        return redirect('admin/services')->with('status','Service Not Added');
     }
 }

@@ -37,9 +37,9 @@ class PlaceController extends Controller
         ];
         $addData = $this->database->getReference($this->tablename)->push($createData);
         if($addData)
-        return redirect('admin/place')->with('status','Place Added Successfully');
+        return redirect('admin/places')->with('status','Place Added Successfully');
         else
-        return redirect('admin/place')->with('status','Place Not Added');
+        return redirect('admin/places')->with('status','Place Not Added');
     }
 
     private function checkError($request){

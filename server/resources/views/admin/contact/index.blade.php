@@ -7,25 +7,29 @@
 <div class="panel">
     <a href="{{ url('admin/contact/create') }}" class="btn">Add contact</a>
 </div>
+@if($contacts)
 <table>
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Content</th>
             <th>Icon</th>
         </tr>
     </thead>
     <tbody>
         @php $i=1 @endphp
-        @forelse($services as $key=>$item)
+        @foreach($contacts as $key=>$item)
         <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $item['name'] }}</td>
+            <td>{{ $item['content'] }}</td>
             <td>{{ $item['icon'] }}</td>
         </tr>
-        @empty
-        <p>Not Found</p>
-        @endforelse
+        @endforeach
     </tbody>
 </table>
+@else
+<p>Not Found</p>
+@endif
 @endsection

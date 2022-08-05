@@ -150,4 +150,16 @@
         })
     })
 </script>
+<footer>
+    <div class="contacts">
+        <ul>
+            <li>
+                <i class="icon location"></i>
+                <p class="header"></p>
+                <p class="content"></p>
+            </li>
+        </ul>
+    </div>
+    <div class="ordanization-info"></div>
+</footer>
 @endsection

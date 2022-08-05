@@ -54,8 +54,8 @@ class RoomController extends Controller
         ];
         $updateData = $this->database->getReference($this->roomtablename.'/'.$id.'/services')->push($serviceData);
         if($updateData)
-        return redirect('admin/room')->with('status','Service Added Successfully');
+        return redirect('admin/rooms')->with('status','Service Added Successfully');
         else
-        return redirect('admin/room')->with('status','Service Not Added');
+        return redirect('admin/rooms')->with('status','Service Not Added');
     }
 }

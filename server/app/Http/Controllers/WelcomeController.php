@@ -16,6 +16,6 @@ class WelcomeController extends Controller
     public function show(){
         $services = $this->database->getReference('services')->getValue();
         $rooms = $this->database->getReference($this->tablename)->getValue();
-        return view('welcome',compact('rooms','services'));
+        return view('welcome.welcome',compact('rooms','services'));
     }
 }
