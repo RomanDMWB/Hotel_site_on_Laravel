@@ -2,7 +2,6 @@
 @import 'icons.less';
 @image-height:768px;
 @container-left-right-padding:5em;
-@header-text-color:goldenrod;
 @room-header-height:1em;
 
 // Room Pages Style
@@ -165,13 +164,15 @@
         text-transform:uppercase;
 
         form{
-            display:flex;
-            flex-direction: row;
+            display:grid;
+            grid-template-columns: repeat(6,1fr);
+            gap:1em;
             align-items: center;
         }
 
         label{
             margin-left:1em;
+            white-space: pre;
         }
 
         input{

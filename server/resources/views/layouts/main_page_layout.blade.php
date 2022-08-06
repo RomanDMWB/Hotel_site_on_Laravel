@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/less" href="{{ url('less/navbar.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/welcome.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/main.less') }}">
+    <link rel="stylesheet" type="text/less" href="{{ url('less/footer.less') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" href="{{ url('images/site-icon.ico') }}">
 </head>
@@ -16,6 +17,7 @@
             @yield('content')
         <footer></footer>
     </div>
+    @include('footer');
     <script src="{{ url('js/less.js') }}"></script>
 </body>
 </html>

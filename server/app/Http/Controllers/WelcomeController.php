@@ -10,12 +10,12 @@ class WelcomeController extends Controller
     public function __construct(Database $database)
     {
         $this->database = $database;
-        $this->tablename = 'rooms';
     }
 
     public function show(){
         $services = $this->database->getReference('services')->getValue();
-        $rooms = $this->database->getReference($this->tablename)->getValue();
-        return view('welcome.welcome',compact('rooms','services'));
+        $rooms = $this->database->getReference('rooms')->getValue();
+        $contacts = $this->database->getReference('contacts')->getValue();
+        return view('welcome.welcome',compact('rooms','services','contacts'));
     }
 }
