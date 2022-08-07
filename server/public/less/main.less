@@ -6,7 +6,12 @@ body{
     margin: 0;
     background-color: @body-color;
     font-family: "Roboto", "Arial", sans-serif;
-    min-height:100vh;
+    height: max(100vh,100%);
+}
+
+body>.content{
+    display: flex;
+    flex-direction: column;
 }
 
 li{
@@ -42,11 +47,6 @@ table{
 td,th{
     padding:1em;
     background-color: @body-color;
-}
-
-.content{
-    display: flex;
-    flex-direction: column;
 }
 
 .form-group{

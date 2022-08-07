@@ -8,5 +8,7 @@
             </li>
             @endforeach
         </ul>
-    <div class="organization-info"><p>© 2021 Hotel Room - All Rights Reserved - Made By <a>Roman</a><p></div>
+    <div class="organization-info">
+        <p>© 2021 Hotel Room - All Rights Reserved - Made By <a>Roman</a></p>
+    </div>
 </footer>

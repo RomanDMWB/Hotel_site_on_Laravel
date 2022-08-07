@@ -15,9 +15,8 @@
     @include('navbar')
     <div class="content">
             @yield('content')
-        <footer></footer>
     </div>
-    @include('footer');
+    @include('footer')
     <script src="{{ url('js/less.js') }}"></script>
 </body>
 </html>
