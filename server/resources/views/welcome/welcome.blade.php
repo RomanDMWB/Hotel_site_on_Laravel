@@ -28,7 +28,7 @@
                         @endif
                     </div>
                     <p>Cost:{{ $item['cost'] }}</p>
-                    <a href="" class="btn">Watch</a>
+                    <a href="{{ url('room/'.$key) }}" class="btn">Watch</a>
                 </div>
             </div>
         </li>

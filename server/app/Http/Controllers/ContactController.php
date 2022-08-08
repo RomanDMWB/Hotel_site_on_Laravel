@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Database;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
@@ -33,5 +34,9 @@ class ContactController extends Controller
         return redirect('admin/contacts')->with('status','Contacts Added Successfully');
         else
         return redirect('admin/contacts')->with('status','Contacts Not Added');
+    }
+
+    public function compose(View $view){
+        $view->with('contacts', $this->database->getReference('contacts')->getValue());
     }
 }

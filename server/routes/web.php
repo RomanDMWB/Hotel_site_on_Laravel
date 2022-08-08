@@ -9,10 +9,16 @@ use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
 
+// User Routes
 Route::get('/', [WelcomeController::class,'show']);
+
 Route::post('booking',[BookingController::class,'create']);
 Route::get('booking/{id}',[BookingController::class,'show']);
+Route::get('booking/form/{type}',[BookingController::class,'form']);
 
+Route::get('room/{id}',[RoomController::class,'getInfo']);
+
+// Administration Routes
 Route::get('admin',[AdminController::class,'show']);
 
 Route::post('admin/room/add',[RoomController::class,'add']);
