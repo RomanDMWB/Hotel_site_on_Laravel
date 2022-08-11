@@ -13,7 +13,7 @@
         <!-- Нижняя панель -->
         <div class="nav-panel">
             <div class="panel-content">
-                <div class="company-icon"></div>
+                <a href="{{ url('') }}"><div class="company-icon"></div></a>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
                     <li class="nav-item"><a href="">Hotels</a></li>
