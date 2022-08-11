@@ -22,8 +22,10 @@ Route::get('room/{id}',[RoomController::class,'getInfo']);
 Route::get('admin',[AdminController::class,'show']);
 
 Route::post('admin/room/add',[RoomController::class,'add']);
+Route::post('admin/room/update/{id}',[RoomController::class,'update']);
 Route::get('admin/rooms',[RoomController::class,'show']);
 Route::get('admin/room/create',[RoomController::class,'create']);
+Route::get('admin/room/update/{id}',[RoomController::class,'updateForm']);
 Route::get('admin/room/add/service/{id}',[RoomController::class,'selectService']);
 Route::put('admin/room/update/service/{id}',[RoomController::class,'addService']);
 

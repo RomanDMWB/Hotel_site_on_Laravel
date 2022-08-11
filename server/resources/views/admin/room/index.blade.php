@@ -52,7 +52,7 @@
             <td>{{ $item['description'] }}</td>
             <td>{{ $item['image'] }}</td>
             <td><a href="{{ url('admin/room/add-service/'.$key) }}" class='btn'>Add</a></td>
-            <td><a href="" class='btn'>Update</a></td>
+            <td><a href="{{ url('admin/room/update/'.$key) }}" class='btn'>Update</a></td>
             <td><a href="" class='btn'>Delete</a></td>
         </tr>
         @empty
