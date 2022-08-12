@@ -31,9 +31,9 @@ class ContactController extends Controller
         ];
         $addData = $this->database->getReference($this->tablename)->push($createData);
         if($addData)
-        return redirect('admin/contacts')->with('status','Contacts Added Successfully');
+        return redirect('admin/contacts')->with('status','Contact Added Successfully');
         else
-        return redirect('admin/contacts')->with('status','Contacts Not Added');
+        return redirect('admin/contacts')->with('status','Contact Not Added');
     }
 
     public function compose(View $view){

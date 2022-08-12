@@ -6,7 +6,7 @@
     <p>{{ session('status') }}</p>
 @endif
 <div class="panel">
-    <a href="{{ url('admin/room/create') }}" class="btn">Add room</a>
+    <a href="{{ url('admin/room/form') }}" class="btn">Add room</a>
 </div>
 <table>
     <thead>

@@ -32,7 +32,7 @@
             <td>{{ $item['place'] }}</td>
             <td>{{ $item['type'] }}</td>
             <td class="action">
-                <a href="{{ url('admin/booking/update/'.$key) }}" class="btn">Update</a>
+                <a href="{{ url('admin/booking/form/'.$key) }}" class="btn">Update</a>
                 <a href="{{ url('admin/booking/destroy/'.$key) }}" class="btn">Delete</a>
             </td>
         </tr>

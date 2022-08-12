@@ -20,3 +20,35 @@ td,th{
     width: @content-width;
     margin:0 auto;
 }
+
+label{
+    text-transform: uppercase;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:2em 0;
+}
+
+.form-group{
+    margin-bottom:1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:(@content-width/2);
+
+    [type='submit']{
+        border: 0;
+        margin:0 auto;
+    }
+
+    [type='text']{
+        padding: 10px 30px 10px 20px;
+    }
+}
+
+.form-group:last-child{
+    margin:0;
+}

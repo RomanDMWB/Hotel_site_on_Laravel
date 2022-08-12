@@ -92,23 +92,23 @@
             @csrf
             <div class="form-group">
                 <label for="">Arrival Date</label>
-                <input type="date" name='arrival_date' required placeholder="Select Date" min="<?php echo date ('Y-m-d'); ?>">
+                <input type="date" name='date' required min="<?php echo date ('Y-m-d'); ?>">
             </div>
             <div class="form-group">
                 <label for="">Night Count</label>
-                <input type="number" max='30' min='0' required name='night_count' value="0">
+                <input type="number" max='30' min='0' required name='nights' value="0">
             </div>
             <div class="form-group">
                 <label for="">Adults</label>
-                <input type="number" max='5' min='0' required name='adult_count' value="0">
+                <input type="number" max='5' min='0' required name='adults' value="0">
             </div>
             <div class="form-group">
                 <label for="">Kids</label>
-                <input type="number" max='5' min='0' required name='child_count' value="0">
+                <input type="number" max='5' min='0' required name='childs' value="0">
             </div>
             <div class="form-group">
                 <label for="">Room Type</label>
-                <select name="room_type" required>
+                <select name="type" required>
                     @if($rooms)
                     @foreach($rooms as $key=>$item)
                     <option value="{{ $key }}">{{ $item['name'] }}</option>

@@ -22,39 +22,42 @@ class BookingController extends Controller
             ]]);
         $room_type = $this->database->getReference('rooms')->getChild($request->room_type)->getValue();
         $room_type_name = $room_type['name'];
-        $place_number = $this->boookingInTheRoom($room_type_name);
+        $place_number = $this->boookingInThePlace($room_type_name);
         if(!$place_number)
-        return back()->withErrors(['error'=>[
-            'place_number' => 'Sorry, places on this type room do not be in the datebase'
-        ]]);
-        $cost = $request->night_count*($request->adult_count+$request->child_count/2)*$room_type['cost'];
+            return back()->withErrors(['error'=>[
+                'place_number' => 'Sorry, places on this type room do not be in the datebase'
+            ]]);
         $createdData = [
             'type' => $room_type_name,
             'place' => $place_number,
-            'date' => $request->arrival_date,
-            'adults' => $request->adult_count,
-            'childs' => $request->child_count,
-            'nights' => $request->night_count,
-            'cost' => $cost
+            'date' => $request->date,
+            'adults' => $request->adults,
+            'childs' => $request->childs,
+            'nights' => $request->nights,
+            'cost' => $this->getCost($request,$room_type['cost'])
         ];
         $addData = $this->database->getReference($this->tablename)->push($createdData);
         if($addData->getKey())
-        return redirect('booking/'.$addData->getKey());
+            return redirect('booking/'.$addData->getKey());
         else 
-        return redirect('/')->with('status','Sorry, booking not completed');
+            return redirect('/')->with('status','Sorry, booking not completed');
+    }
+
+    private function getCost($request,$cost){
+        return $request->night_count*($request->adult_count+$request->child_count/2)*$cost;
     }
     
     public function showBooking($id){
         $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
         if($booking)
-        return view('booking_welcome',compact('booking','id'));
+            return view('booking_welcome',compact('booking','id'));
         else
-        return back()->withErrors([
-            'errors'=>'Sorry this booking does not be in database'
-        ]);
+            return back()->withErrors([
+                'errors'=>'Sorry this booking does not be in database'
+            ]);
     }
 
-    private function boookingInTheRoom($room_type){
+    private function boookingInThePlace($room_type){
         $place_number = 0;
         $places = $this->database->getReference('places')->getValue();
         $place = "";
@@ -70,8 +73,44 @@ class BookingController extends Controller
         return $place_number;
     }
 
-    public function form(){
+    public function form($id){
+        $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
+        $placesNumber = array();
+        $places = $this->database->getReference('places')->getValue();
+        foreach ($places as $key => $value) {
+            if($value['type']===$booking['type'])
+                $placesNumber[] = $value['number'];
+        }
+        dd($placesNumber);
+        return view('admin.booking.form',compact('booking','id'));
+    }
+
+    public function show(){
         $bookings = $this->database->getReference($this->tablename)->getValue();
         return view('admin.booking.index',compact('bookings'));
+    }
+
+    private function getTypeObject($typename){
+        $types = $this->database->getReference('rooms')->getValue();
+        $type = null;
+        foreach ($types as $value) 
+            if($value['name']===$typename)
+                $type = $value['cost'];
+        return $type;
+    }
+
+    public function update(BookingCreateRequest $request,$id){
+        $updateResult = $this->database->getReference($this->tablename.'/'.$id)->update([
+            'adults'=>$request->adults,
+            'childs'=>$request->childs,
+            'place'=>$request->place,
+            'cost'=>$this->getCost($request,$this->getTypeObject($request->type)['cost']),
+            'type'=>$request->type,
+            'nights'=>$request->nights,
+        ]);
+        if($updateResult)
+        return redirect('admin/bookings')->with('status','Booking Updated Successfully');
+        else
+        return redirect('admin/bookings')->with('status','Booking Not Updated');
     }
 }

@@ -20,7 +20,12 @@ class RoomController extends Controller
         return view('admin.room.index',compact('rooms'));
     }
 
-    public function form(){
+    public function form($id=null){
+        if($id){
+            $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+            return view('admin.room.form',compact('room','id'));
+        }
+        else
         return view('admin.room.form');
     }
 
@@ -38,11 +43,6 @@ class RoomController extends Controller
         return redirect('admin/rooms')->with('status','Room Added Successfully');
         else
         return redirect('admin/rooms')->with('status','Room Not Added');
-    }
-
-    public function updateForm($id){
-        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
-        return view('admin.room.create',compact('room','id'));
     }
 
     public function update(RoomCreateRequest $request,$id){

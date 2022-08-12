@@ -7,15 +7,15 @@
     @csrf
     <div class="form-group">
         <label>Contact Header</label>
-        <input type="text" name="name" class="form-control">
+        <input type="text" name="name" class="form-control" required>
     </div>
     <div class="form-group">
         <label>Contact Content</label>
-        <input type="text" name="content" class="form-control">
+        <input type="text" name="content" class="form-control" required>
     </div>
     <div class="form-group">
         <label>Icon</label>
-        <input type="text" name="icon" class="form-control">
+        <input type="text" name="icon" class="form-control" required>
     </div>
     <div class="form-group">
         <button type="submit" class="btn">Добавить</button>

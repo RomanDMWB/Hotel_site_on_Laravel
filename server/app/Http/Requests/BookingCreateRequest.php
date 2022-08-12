@@ -14,11 +14,13 @@ class BookingCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'arrival_date' => ['required','date','date_format:"Y-m-d"'],
-            'night_count' => ['required','integer','max:30'],
-            'adult_count' => ['required','integer','max:5'],
-            'child_count' => ['required','integer','max:5'],
-            'room_type' => ['required']
+            'date' => ['required','date','date_format:"Y-m-d"'],
+            'nights' => ['required','integer','max:30'],
+            'adults' => ['required','integer','max:5'],
+            'childs' => ['required','integer','max:5'],
+            'type' => ['required','string'],
+            'place' => ['nullable','integer'],
+            'cost' => ['nullable','integer']
         ];
     }
 }

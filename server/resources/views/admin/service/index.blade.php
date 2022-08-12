@@ -5,7 +5,7 @@
     <p>{{ session('status') }}</p>
 @endif
 <div class="panel">
-    <a href="{{ url('admin/contact/create') }}" class="btn">Add contact</a>
+    <a href="{{ url('admin/contact/form') }}" class="btn">Add contact</a>
 </div>
 <table>
     <thead>

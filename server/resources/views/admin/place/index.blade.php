@@ -5,7 +5,7 @@
     <p>{{ session('status') }}</p>
 @endif
 <div class="panel">
-    <a href="{{ url('admin/place/create') }}" class="btn">Add place</a>
+    <a href="{{ url('admin/place/form') }}" class="btn">Add place</a>
 </div>
 @if($places)
 <table>
