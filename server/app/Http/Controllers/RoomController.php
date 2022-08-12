@@ -20,8 +20,8 @@ class RoomController extends Controller
         return view('admin.room.index',compact('rooms'));
     }
 
-    public function create(){
-        return view('admin.room.create');
+    public function form(){
+        return view('admin.room.form');
     }
 
     public function add(RoomCreateRequest $request){

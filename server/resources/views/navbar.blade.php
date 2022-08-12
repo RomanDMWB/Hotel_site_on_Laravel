@@ -16,8 +16,8 @@
                 <a href="{{ url('') }}"><div class="company-icon"></div></a>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li class="nav-item"><a href="">Hotels</a></li>
                     <li class="nav-item"><a href="">Booking</a></li>
+                    <li class="nav-item"><a href="{{ url('admin') }}">Administration</a></li>
                     <li class="nav-item"><a href="">About</a></li>
                     <li class="nav-item"><a href="">Contacts</a></li>
                 </ul>

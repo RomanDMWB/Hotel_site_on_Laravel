@@ -44,7 +44,7 @@ class BookingController extends Controller
         return redirect('/')->with('status','Sorry, booking not completed');
     }
     
-    public function show($id){
+    public function showBooking($id){
         $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
         if($booking)
         return view('booking_welcome',compact('booking','id'));
@@ -68,5 +68,10 @@ class BookingController extends Controller
         if($place)
             $this->database->getReference('places/'.$place)->update(['isOccupied' => true]);
         return $place_number;
+    }
+
+    public function form(){
+        $bookings = $this->database->getReference($this->tablename)->getValue();
+        return view('admin.booking.index',compact('bookings'));
     }
 }

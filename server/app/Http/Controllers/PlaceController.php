@@ -19,9 +19,9 @@ class PlaceController extends Controller
         return view('admin.place.index',compact('places'));
     }
 
-    public function create(){
+    public function form(){
         $rooms = $this->database->getReference('rooms')->getValue();
-        return view('admin.place.create',compact('rooms'));
+        return view('admin.place.form',compact('rooms'));
     }
 
     public function add(PlaceCreateRequest $request){

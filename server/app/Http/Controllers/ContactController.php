@@ -18,8 +18,8 @@ class ContactController extends Controller
         return view('admin.contact.index',compact('contacts'));
     }
 
-    public function create(){
-        return view('admin.contact.create');
+    public function form(){
+        return view('admin.contact.form');
     }
 
     public function add(Request $request){
