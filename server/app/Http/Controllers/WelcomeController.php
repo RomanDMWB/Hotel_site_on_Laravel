@@ -11,11 +11,10 @@ class WelcomeController extends Controller
     {
         $this->database = $database;
     }
-
+    
     public function show(){
         $services = $this->database->getReference('services')->getValue();
         $rooms = $this->database->getReference('rooms')->getValue();
-        $contacts = $this->database->getReference('contacts')->getValue();
-        return view('welcome.welcome',compact('rooms','services','contacts'));
+        return view('welcome.welcome',compact('rooms','services'));
     }
 }

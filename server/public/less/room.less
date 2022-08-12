@@ -1,0 +1,93 @@
+@import 'config.less';
+
+.room-picture{
+    background-repeat: no-repeat;  
+    background-position: center;  
+    background-size: 100vw;
+    height:30em;
+    position: relative;
+
+    .header{
+        text-transform: uppercase;
+        font-size: 1em;
+        font-weight: 600;
+    }
+
+    .gold-text{
+        color:@header-text-color;
+        font-weight: normal;
+    }
+
+    .room-info{
+        display:flex;
+        flex-direction: column;
+        background: @body-color;
+        padding:2.5em 2em 3em;
+        justify-self: flex-end;
+        box-shadow: -4px -4px 1em rgba(0, 0, 0, 0.5);
+        position: absolute;
+        bottom: 0;
+        right:25%;
+        color:#666;
+    }
+
+    .info{
+        display:grid;
+        grid-template-columns: repeat(2,1fr);
+        gap:1em;
+        font-size: .75em;
+        margin-bottom: 1em;
+    }
+
+    .btn{
+        font-size:.75em;
+    }
+}
+
+.room-picture::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content{
+    .header{
+        font-size: 2em;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .description{
+        font-size: 14px;
+        color:@theme-color;
+        line-height: 2em;
+    }
+}
+
+
+.room-full-information{
+    width: @content-width;
+    margin:0 auto 1em;
+}
+
+.services{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:1em;
+
+    li{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        text-align: center;
+    }
+    
+    li:not(:nth-child(4n-3)){
+        border-left: #666 solid 1px;
+
+    }
+}

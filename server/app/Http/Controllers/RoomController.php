@@ -11,12 +11,12 @@ class RoomController extends Controller
     public function __construct(Database $database)
     {
         $this->database = $database;
-        $this->roomtablename = 'rooms';
-        $this->servicetablename = 'services';
+        $this->roomTablenName = 'rooms';
+        $this->serviceTableName = 'services';
     }
 
     public function show(){
-        $rooms = $this->database->getReference($this->roomtablename)->getValue();
+        $rooms = $this->database->getReference($this->roomTablenName)->getValue();
         return view('admin.room.index',compact('rooms'));
     }
 
@@ -33,29 +33,57 @@ class RoomController extends Controller
             'image'=>$request->image,
             'services'=>""
         ];
-        $addData = $this->database->getReference($this->roomtablename)->push($createData);
+        $addData = $this->database->getReference($this->roomTablenName)->push($createData);
         if($addData)
-        return redirect('admin/room')->with('status','Room Added Successfully');
+        return redirect('admin/rooms')->with('status','Room Added Successfully');
         else
-        return redirect('admin/room')->with('status','Room Not Added');
+        return redirect('admin/rooms')->with('status','Room Not Added');
+    }
+
+    public function updateForm($id){
+        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+        return view('admin.room.create',compact('room','id'));
+    }
+
+    public function update(RoomCreateRequest $request,$id){
+        $updateData = [
+            'name' => $request->name,
+            'cost' => $request->cost,
+            'size' => $request->size,
+            'description'=>$request->description,
+            'image'=>$request->image
+        ];
+        $updateResult = $this->database->getReference($this->roomTablenName.'/'.$id)->update($updateData);
+        if($updateResult)
+        return redirect('admin/rooms')->with('status','Room Updated Successfully');
+        else
+        return redirect('admin/rooms')->with('status','Room Not Updated');
     }
 
     public function selectService($id){
-        $services = $this->database->getReference($this->servicetablename)->getValue();
-        $room = $this->database->getReference($this->roomtablename)->getChild($id)->getValue();
+        $services = $this->database->getReference($this->serviceTableName)->getValue();
+        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
         return view('admin.room.add-service',compact('room','services','id'));
     }
 
     public function addService(Request $request,$id){
-        $service = $this->database->getReference($this->servicetablename)->getChild($request->serviceId)->getValue();
+        $service = $this->database->getReference($this->serviceTableName)->getChild($request->serviceId)->getValue();
         $serviceData = [
             'icon' => $service['icon'],
             'name' => $service['name']
         ];
-        $updateData = $this->database->getReference($this->roomtablename.'/'.$id.'/services')->push($serviceData);
+        $updateData = $this->database->getReference($this->roomTablenName.'/'.$id.'/services')->push($serviceData);
         if($updateData)
         return redirect('admin/rooms')->with('status','Service Added Successfully');
         else
         return redirect('admin/rooms')->with('status','Service Not Added');
+    }
+
+    public function getInfo($id){
+        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+        if($room)
+        return view('room',compact('room'));
+        else
+        return view('error');
     }
 }
