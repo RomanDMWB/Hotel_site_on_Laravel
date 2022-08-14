@@ -8,6 +8,9 @@
     @if($_SERVER['REQUEST_URI']==='/')
     <link rel="stylesheet" type="text/less" href="{{ url('less/welcome.less') }}">
     @endif
+    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='room')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/room.less') }}">
+    @endif
     <link rel="stylesheet" type="text/less" href="{{ url('less/main.less') }}">
     <link rel="stylesheet" type="text/less" href="{{ url('less/footer.less') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

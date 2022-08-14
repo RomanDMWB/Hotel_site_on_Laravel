@@ -21,9 +21,10 @@ Route::get('room/{id}',[RoomController::class,'getInfo']);
 // Administration Routes
 Route::get('admin',[AdminController::class,'show']);
 
+Route::put('admin/booking/update/{id}',[BookingController::class,'update']);
 Route::get('admin/bookings',[BookingController::class,'show']);
 Route::get('admin/booking/form/{id}',[BookingController::class,'form']);
-Route::post('admin/booking/update/{id}',[BookingController::class,'update']);
+Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfType']);
 
 Route::post('admin/room/add',[RoomController::class,'add']);
 Route::post('admin/room/update/{id}',[RoomController::class,'update']);
