@@ -22,6 +22,7 @@ Route::get('room/{id}',[RoomController::class,'getInfo']);
 Route::get('admin',[AdminController::class,'show']);
 
 Route::put('admin/booking/update/{id}',[BookingController::class,'update']);
+Route::post('admin/booking/destroy/{id}',[BookingController::class,'destroy']);
 Route::get('admin/bookings',[BookingController::class,'show']);
 Route::get('admin/booking/form/{id}',[BookingController::class,'form']);
 Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfType']);

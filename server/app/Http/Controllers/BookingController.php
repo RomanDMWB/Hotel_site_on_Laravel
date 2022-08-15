@@ -17,26 +17,21 @@ class BookingController extends Controller
     }
 
     public function create(BookingCreateRequest $request){
-        $is_type_exists = $this->database->getReference('rooms')->getSnapshot()->hasChild($request->room_type);
-        if(!$is_type_exists)
-            return back()->withErrors(['error'=>[
-                'room_type' => 'Room Name must be exists in datebase'
-            ]]);
-        $room_type = $this->database->getReference('rooms')->getChild($request->room_type)->getValue();
-        $room_type_name = $room_type['name'];
-        $place_number = $this->boookingInThePlace($room_type_name);
+        $room = $this->database->getReference('rooms')->getChild($request->type)->getValue();
+        $room_name = $room['name'];
+        $place_number = $this->boookingInThePlace($room_name);
         if(!$place_number)
             return back()->withErrors(['error'=>[
                 'place_number' => 'Sorry, places on this type room do not be in the datebase'
             ]]);
         $createdData = [
-            'type' => $room_type_name,
+            'type' => $room_name,
             'place' => $place_number,
             'date' => $request->date,
             'adults' => $request->adults,
             'childs' => $request->childs,
             'nights' => $request->nights,
-            'cost' => $this->getCost($request,$room_type['cost'])
+            'cost' => $this->getCost($request,$room['cost'])
         ];
         $addData = $this->database->getReference($this->tablename)->push($createdData);
         if($addData->getKey())
@@ -88,6 +83,14 @@ class BookingController extends Controller
             'places' => $places
         ],200);
     }
+
+    public function destroy($id){
+        $removedData = $this->database->getReference($this->tablename.'/'.$id)->remove();
+        if($removedData)
+        return back()->with('status','Booking Deleted Successfully');
+        else
+        return back()->with('status','Booking Not Deleted');
+    }
     
     private function getPlace($type){
         $places = $this->database->getReference('places')->getValue();
@@ -102,12 +105,12 @@ class BookingController extends Controller
         return $request->nights*($request->adults+$request->childs/2)*$cost;
     }
 
-    private function boookingInThePlace($room_type){
+    private function boookingInThePlace($room){
         $place_number = 0;
         $places = $this->database->getReference('places')->getValue();
         $place = "";
         foreach ($places as $key=>$value) {
-            if($value['type']==$room_type&&!$value['isOccupied']){
+            if($value['type']==$room&&!$value['isOccupied']){
                 $place_number = $value['number'];
                 $place = $key;
                 break 1;

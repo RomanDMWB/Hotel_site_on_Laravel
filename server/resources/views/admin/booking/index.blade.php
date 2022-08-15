@@ -33,7 +33,10 @@
             <td>{{ $item['type'] }}</td>
             <td class="action">
                 <a href="{{ url('admin/booking/form/'.$key) }}" class="btn">Update</a>
-                <a href="{{ url('admin/booking/destroy/'.$key) }}" class="btn">Delete</a>
+                <form action="{{ url('admin/booking/destroy/'.$key) }}" method="post">
+                    @csrf
+                    <button type='submit' class="btn" id='destroy-button'>Delete</button>
+                </form>
             </td>
         </tr>
         @endforeach
@@ -42,4 +45,10 @@
 @else
 <p>Not Found</p>
 @endif
+<script>
+    document.getElementById('destroy-button').addEventListener('click',(e)=>{
+        if(!confirm('Are you sure to delete the data?'))
+            e.preventDefault();
+    })
+</script>
 @endsection
