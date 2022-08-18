@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Contract\Database;
 use Illuminate\View\View;
+use App\Http\Requests\CreateContactRequest;
 
 class ContactController extends Controller
 {
+    private $tablename;
+    private $database;
+
     public function __construct(Database $database)
     {
         $this->database = $database;
@@ -19,24 +23,39 @@ class ContactController extends Controller
         return view('admin.contact.index',compact('contacts'));
     }
 
-    public function form(){
+    public function form($id=null){
+        if($id){
+            $contact = $this->database->getReference($this->tablename)->getChild($id)->getValue();
+            return view('admin.contact.form',compact('contact','id'));
+        }
+        else
         return view('admin.contact.form');
     }
 
-    public function add(Request $request){
+    public function add(CreateContactRequest $request){
         $createData = [
             'name' => $request->name,
             'content' => $request->content,
             'icon' => $request->icon,
         ];
-        $addData = $this->database->getReference($this->tablename)->push($createData);
-        if($addData)
-        return redirect('admin/contacts')->with('status','Contact Added Successfully');
-        else
-        return redirect('admin/contacts')->with('status','Contact Not Added');
+        $addResult = $this->database->getReference($this->tablename)->push($createData);
+        $status = TableController::processDataAction('contact','added',isset($addResult));
+        return redirect('admin/contacts')->with('status',$status);
+    }
+    
+    public function update(CreateContactRequest $request,$id){
+        $updateResult = $this->database->getReference($this->tablename.'/'.$id)->update([
+            'name' => $request->name,
+            'content' => $request->content,
+            'icon' => $request->icon,
+        ]);
+        $status = TableController::processDataAction('contact','updated',isset($updateResult));
+        return redirect('admin/contacts')->with('status',$status);
     }
 
-    public function compose(View $view){
-        $view->with('contacts', $this->database->getReference('contacts')->getValue());
+    public function destroy($id){
+        $removeResult = $this->database->getReference($this->tablename.'/'.$id)->remove();
+        $status = TableController::processDataAction('contact','removed',isset($removeResult));
+        return redirect('admin/contacts')->with('status',$status);
     }
 }

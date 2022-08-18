@@ -71,25 +71,21 @@ class BookingController extends Controller
             'type'=>$request->type,
             'nights'=>$request->nights,
         ]);
-        if($updateResult)
-        return redirect('admin/bookings')->with('status','Booking Updated Successfully');
-        else
-        return redirect('admin/bookings')->with('status','Booking Not Updated');
+        $status = TableController::processDataAction('booking','updated',isset($updateResult));
+        return redirect('admin/bookings')->with('status',$status);
     }
-
+    
     public function getPLacesOfType($type){
         $places = $this->getPLace($type);
         return response()->json([
             'places' => $places
         ],200);
     }
-
+    
     public function destroy($id){
         $removedData = $this->database->getReference($this->tablename.'/'.$id)->remove();
-        if($removedData)
-        return back()->with('status','Booking Deleted Successfully');
-        else
-        return back()->with('status','Booking Not Deleted');
+        $status = TableController::processDataAction('booking','removed',isset($removedData));
+        return redirect('admin/bookings')->with('status',$status);
     }
     
     private function getPlace($type){

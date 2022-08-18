@@ -29,11 +29,11 @@ Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfTyp
 
 Route::post('admin/room/add',[RoomController::class,'add']);
 Route::post('admin/room/update/{id}',[RoomController::class,'update']);
+Route::put('admin/room/update/service/{id}',[RoomController::class,'addService']);
 Route::get('admin/rooms',[RoomController::class,'show']);
 Route::get('admin/room/form',[RoomController::class,'form']);
 Route::get('admin/room/form/{id}',[RoomController::class,'form']);
 Route::get('admin/room/add/service/{id}',[RoomController::class,'selectService']);
-Route::put('admin/room/update/service/{id}',[RoomController::class,'addService']);
 
 Route::post('admin/service/add',[ServiceController::class,'add']);
 Route::get('admin/services',[ServiceController::class,'show']);
@@ -44,5 +44,8 @@ Route::get('admin/places',[PlaceController::class,'show']);
 Route::get('admin/place/form',[PlaceController::class,'form']);
 
 Route::post('admin/contact/add',[ContactController::class,'add']);
+Route::post('admin/contact/destroy/{id}',[ContactController::class,'destroy']);
+Route::patch('admin/contact/update/{id}',[ContactController::class,'update']);
 Route::get('admin/contacts',[ContactController::class,'show']);
 Route::get('admin/contact/form',[ContactController::class,'form']);
+Route::get('admin/contact/form/{id}',[ContactController::class,'form']);

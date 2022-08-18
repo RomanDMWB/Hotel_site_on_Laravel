@@ -45,10 +45,4 @@
 @else
 <p>Not Found</p>
 @endif
-<script>
-    document.getElementById('destroy-button').addEventListener('click',(e)=>{
-        if(!confirm('Are you sure to delete the data?'))
-            e.preventDefault();
-    })
-</script>
 @endsection

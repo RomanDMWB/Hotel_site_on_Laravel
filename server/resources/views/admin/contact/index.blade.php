@@ -15,6 +15,7 @@
             <th>Name</th>
             <th>Content</th>
             <th>Icon</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,13 @@
             <td>{{ $item['name'] }}</td>
             <td>{{ $item['content'] }}</td>
             <td>{{ $item['icon'] }}</td>
+            <td class="action">
+                <a href="{{ url('admin/contact/form/'.$key) }}" class="btn">Update</a>
+                <form action="{{ url('admin/contact/destroy/'.$key) }}" method="post">
+                    @csrf
+                    <button type='submit' class="btn" id='destroy-button'>Delete</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>

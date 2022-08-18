@@ -16,5 +16,12 @@
             @yield('content')
     </div>
     <script src="{{ url('js/less.js') }}"></script>
+    <script>
+        if(document.getElementById('destroy-button'))
+            document.getElementById('destroy-button').addEventListener('click',(e)=>{
+                if(!confirm('Are you sure to delete the data?'))
+                    e.preventDefault();
+            })
+    </script>
 </body>
 </html>
