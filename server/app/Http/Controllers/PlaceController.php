@@ -8,6 +8,9 @@ use App\Http\Requests\PlaceCreateRequest;
 
 class PlaceController extends Controller
 {
+    private $tablename;
+    private $database;
+
     public function __construct(Database $database)
     {
         $this->database = $database;
@@ -28,18 +31,44 @@ class PlaceController extends Controller
         $error = $this->checkError($request);
         if($error)
             return back()->withErrors(['error'=> $error]);
-        $is_occupied = !!$request->occupied;
         $room_type = $this->database->getReference('rooms')->getChild($request->room_type)->getValue();
         $createData = [
             'number' => $request->place_number,
-            'isOccupied' => $is_occupied,
+            'isOccupied' => false,
             'type' => $room_type['name'],
         ];
         $addData = $this->database->getReference($this->tablename)->push($createData);
-        if($addData)
-        return redirect('admin/places')->with('status','Place Added Successfully');
-        else
-        return redirect('admin/places')->with('status','Place Not Added');
+        $status = TableController::processDataAction('place','added',isset($addData));
+        return redirect('admin/places')->with('status',$status);
+    }
+
+    public function update(PlaceCreateRequest $request,$id){
+        $currentPlace = $this->database->getReference($this->tablename)->getChild($id)->getValue();
+        $isUpdated = true;
+        if($currentPlace['number']!=$request['number']){
+            $bookings = $this->database->getReference('bookings')->getValue();
+            foreach ($bookings as $key => $value) {
+                if($value['place']==$currentPlace['number']){
+                    $updatedResult = $this->database->getReference('bookings'.'/'.$key)->update(['place'=>$request['number']]);
+                    $isUpdated = $isUpdated && isset($updatedResult);
+                }
+            }
+            $updatedResult = $this->database->getReference($this->tablename.'/'.$id)->update(['number'=>$request['number']]);
+            $isUpdated = $isUpdated && isset($updatedResult);
+        }
+        if($currentPlace['type']!=$request['type']){
+            $bookings = $this->database->getReference('bookings')->getValue();
+            foreach ($bookings as $key => $value) {
+                if($value['type']==$currentPlace['type']){
+                    $updatedResult = $this->database->getReference('bookings'.'/'.$key)->update(['type'=>$request['type']]);
+                    $isUpdated = $isUpdated && isset($updatedResult);
+                }
+            }
+            $updatedResult = $this->database->getReference($this->tablename.'/'.$id)->update(['type'=>$request['type']]);
+            $isUpdated = $isUpdated && isset($updatedResult);
+        }
+        $status = TableController::processDataAction('place','updated',$isUpdated);
+        return redirect('admin/places')->with('status',$status);
     }
 
     private function checkError($request){

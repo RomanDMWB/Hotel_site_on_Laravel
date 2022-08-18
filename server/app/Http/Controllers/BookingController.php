@@ -83,6 +83,12 @@ class BookingController extends Controller
     }
     
     public function destroy($id){
+        $places = $this->database->getReference('places')->getValue();
+        $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
+        foreach($places as $key=>$value){
+            if($value['number']==$booking['place'])
+                $this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
+        }
         $removedData = $this->database->getReference($this->tablename.'/'.$id)->remove();
         $status = TableController::processDataAction('booking','removed',isset($removedData));
         return redirect('admin/bookings')->with('status',$status);

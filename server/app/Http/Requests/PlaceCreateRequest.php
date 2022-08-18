@@ -15,7 +15,6 @@ class PlaceCreateRequest extends FormRequest
     {
         return [
             'place_number' => ['required','integer','digits:3'],
-            'occupied' => ['nullable'],
             'room_type' => ['required','string']
         ];
     }

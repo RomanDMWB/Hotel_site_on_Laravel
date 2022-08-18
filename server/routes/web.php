@@ -40,8 +40,11 @@ Route::get('admin/services',[ServiceController::class,'show']);
 Route::get('admin/service/form',[ServiceController::class,'form']);
 
 Route::post('admin/place/add',[PlaceController::class,'add']);
+Route::post('admin/place/destroy/{id}',[PlaceController::class,'destroy']);
+Route::put('admin/place/update/{id}',[PlaceController::class,'update']);
 Route::get('admin/places',[PlaceController::class,'show']);
 Route::get('admin/place/form',[PlaceController::class,'form']);
+Route::get('admin/place/form/{id}',[PlaceController::class,'form']);
 
 Route::post('admin/contact/add',[ContactController::class,'add']);
 Route::post('admin/contact/destroy/{id}',[ContactController::class,'destroy']);
