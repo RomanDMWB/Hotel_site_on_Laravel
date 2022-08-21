@@ -12,6 +12,10 @@ class ContactController extends Controller
     private $tablename;
     private $database;
 
+    public function compose(View $view){
+        $view->with('contacts', $this->database->getReference('contacts')->getValue());
+    }
+
     public function __construct(Database $database)
     {
         $this->database = $database;

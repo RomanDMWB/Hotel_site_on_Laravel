@@ -13,6 +13,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Icon</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,13 @@
             <td>{{ $i++ }}</td>
             <td>{{ $item['name'] }}</td>
             <td>{{ $item['icon'] }}</td>
+            <td class="action">
+                <a href="{{ url('admin/service/form/'.$key) }}" class="btn">Update</a>
+                <form action="{{ url('admin/service/destroy/'.$key) }}" method="post">
+                    @csrf
+                    <button type='submit' class="btn" id='destroy-button'>Delete</button>
+                </form>
+            </td>
         </tr>
         @empty
         <p>Not Found</p>

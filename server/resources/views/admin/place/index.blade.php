@@ -15,6 +15,7 @@
             <th>Room Number</th>
             <th>Is Occupied</th>
             <th>Room Type</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +31,13 @@
                 @endif
             </td>
             <td>{{ $item['type'] }}</td>
+            <td class="action">
+                <a href="{{ url('admin/place/form/'.$key) }}" class="btn">Update</a>
+                <form action="{{ url('admin/place/destroy/'.$key) }}" method="post">
+                    @csrf
+                    <button type='submit' class="btn" id='destroy-button'>Delete</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>

@@ -2,6 +2,9 @@
 
 @section('content')
 <form action="<?php if(isset($room)) echo url('admin/room/update/'.$id); else echo url('admin/room/add') ?>" method="post">
+    @if(isset($room))
+        @method('put')
+    @endif
     @csrf
     <div class="form-group">
         <label>Room Name</label>

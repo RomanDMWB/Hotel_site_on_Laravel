@@ -19,8 +19,7 @@
             <th>Description</th>
             <th>Image</th>
             <th>Add Services</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -52,8 +51,13 @@
             <td>{{ $item['description'] }}</td>
             <td>{{ $item['image'] }}</td>
             <td><a href="{{ url('admin/room/add-service/'.$key) }}" class='btn'>Add</a></td>
-            <td><a href="{{ url('admin/room/update/'.$key) }}" class='btn'>Update</a></td>
-            <td><a href="" class='btn'>Delete</a></td>
+            <td class="action">
+                <a href="{{ url('admin/room/form/'.$key) }}" class="btn">Update</a>
+                <form action="{{ url('admin/room/destroy/'.$key) }}" method="post">
+                    @csrf
+                    <button type='submit' class="btn" id='destroy-button'>Delete</button>
+                </form>
+            </td>
         </tr>
         @empty
         <p>Not Found</p>

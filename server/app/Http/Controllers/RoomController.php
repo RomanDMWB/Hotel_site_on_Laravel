@@ -8,21 +8,25 @@ use App\Http\Requests\RoomCreateRequest;
 
 class RoomController extends Controller
 {
+    private $database;
+    private $roomTableName;
+    private $serviceTableName;
+
     public function __construct(Database $database)
     {
         $this->database = $database;
-        $this->roomTablenName = 'rooms';
+        $this->roomTableName = 'rooms';
         $this->serviceTableName = 'services';
     }
 
     public function show(){
-        $rooms = $this->database->getReference($this->roomTablenName)->getValue();
+        $rooms = TableController::getRooms($this->database);
         return view('admin.room.index',compact('rooms'));
     }
 
     public function form($id=null){
         if($id){
-            $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+            $room = TableController::getRooms($this->database,$id);
             return view('admin.room.form',compact('room','id'));
         }
         else
@@ -38,11 +42,9 @@ class RoomController extends Controller
             'image'=>$request->image,
             'services'=>""
         ];
-        $addData = $this->database->getReference($this->roomTablenName)->push($createData);
-        if($addData)
-        return redirect('admin/rooms')->with('status','Room Added Successfully');
-        else
-        return redirect('admin/rooms')->with('status','Room Not Added');
+        $addData = $this->database->getReference($this->roomTableName)->push($createData);
+        return redirect('admin/rooms')->with('status',TableController::processDataAction('room','added',isset($addData)));
+
     }
 
     public function update(RoomCreateRequest $request,$id){
@@ -53,37 +55,43 @@ class RoomController extends Controller
             'description'=>$request->description,
             'image'=>$request->image
         ];
-        $updateResult = $this->database->getReference($this->roomTablenName.'/'.$id)->update($updateData);
-        if($updateResult)
-        return redirect('admin/rooms')->with('status','Room Updated Successfully');
-        else
-        return redirect('admin/rooms')->with('status','Room Not Updated');
+        $updateResult = $this->database->getReference($this->roomTableName.'/'.$id)->update($updateData);
+        return redirect('admin/rooms')->with('status',TableController::processDataAction('room','updated',isset($updateResult)));
     }
 
     public function selectService($id){
         $services = $this->database->getReference($this->serviceTableName)->getValue();
-        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+        $room = TableController::getRooms($this->database,$id);
         return view('admin.room.add-service',compact('room','services','id'));
     }
 
     public function addService(Request $request,$id){
-        $service = $this->database->getReference($this->serviceTableName)->getChild($request->serviceId)->getValue();
-        $serviceData = [
-            'icon' => $service['icon'],
-            'name' => $service['name']
-        ];
-        $updateData = $this->database->getReference($this->roomTablenName.'/'.$id.'/services')->push($serviceData);
-        if($updateData)
-        return redirect('admin/rooms')->with('status','Service Added Successfully');
-        else
-        return redirect('admin/rooms')->with('status','Service Not Added');
+        $updateData = $this->database->getReference($this->roomTableName.'/'.$id.'/services')->push($request->serviceId);
+        $status = TableController::processDataAction('service','added',isset($updateData));
+        return redirect('admin/rooms')->with('status',$status);
     }
 
     public function getInfo($id){
-        $room = $this->database->getReference($this->roomTablenName)->getChild($id)->getValue();
+        $room = TableController::getRooms($this->database,$id);
         if($room)
         return view('room',compact('room'));
         else
         return view('error');
+    }
+
+
+    public function destroy($id){
+        $deleteResult = $this->database->getReference($this->roomTableName.'/'.$id)->remove();
+        $places = $this->database->getReference('places')->getValue();
+        $bookings = $this->database->getReference('bookings')->getValue();
+        foreach($places as $key=>$value)
+            if($value['type']==$id)
+                $this->database->getReference('places/'.$key)->remove();
+            
+        foreach($bookings as $key=>$value)
+            if($value['type']==$id)
+                $this->database->getReference('places/'.$key)->remove();
+
+        return redirect('admin/rooms')->with('status',TableController::processDataAction('room','removed',isset($deleteResult)));
     }
 }

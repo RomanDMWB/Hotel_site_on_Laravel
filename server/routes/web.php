@@ -28,16 +28,20 @@ Route::get('admin/booking/form/{id}',[BookingController::class,'form']);
 Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfType']);
 
 Route::post('admin/room/add',[RoomController::class,'add']);
-Route::post('admin/room/update/{id}',[RoomController::class,'update']);
+Route::post('admin/room/destroy/{id}',[RoomController::class,'destroy']);
+Route::put('admin/room/update/{id}',[RoomController::class,'update']);
 Route::put('admin/room/update/service/{id}',[RoomController::class,'addService']);
 Route::get('admin/rooms',[RoomController::class,'show']);
 Route::get('admin/room/form',[RoomController::class,'form']);
 Route::get('admin/room/form/{id}',[RoomController::class,'form']);
-Route::get('admin/room/add/service/{id}',[RoomController::class,'selectService']);
+Route::get('admin/room/add-service/{id}',[RoomController::class,'selectService']);
 
 Route::post('admin/service/add',[ServiceController::class,'add']);
+Route::post('admin/service/destroy/{id}',[ServiceController::class,'destroy']);
+Route::post('admin/service/update/{id}',[ServiceController::class,'update']);
 Route::get('admin/services',[ServiceController::class,'show']);
 Route::get('admin/service/form',[ServiceController::class,'form']);
+Route::get('admin/service/form/{id}',[ServiceController::class,'form']);
 
 Route::post('admin/place/add',[PlaceController::class,'add']);
 Route::post('admin/place/destroy/{id}',[PlaceController::class,'destroy']);

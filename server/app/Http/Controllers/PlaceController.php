@@ -18,74 +18,43 @@ class PlaceController extends Controller
     }
 
     public function show(){
-        $places = $this->database->getReference($this->tablename)->getValue();
+        $places = TableController::getPlaces($this->database);
         return view('admin.place.index',compact('places'));
     }
 
-    public function form(){
-        $rooms = $this->database->getReference('rooms')->getValue();
-        return view('admin.place.form',compact('rooms'));
+    public function form($id=null){
+        $rooms = TableController::getRooms($this->database);
+        if($id){
+            $place = TableController::getPlaces($this->database,$id);
+            return view('admin.place.form',compact('rooms','place','id'));
+        }
+        else{
+            return view('admin.place.form',compact('rooms'));
+        }
     }
 
     public function add(PlaceCreateRequest $request){
-        $error = $this->checkError($request);
-        if($error)
-            return back()->withErrors(['error'=> $error]);
-        $room_type = $this->database->getReference('rooms')->getChild($request->room_type)->getValue();
         $createData = [
-            'number' => $request->place_number,
+            'number' => $request->number,
             'isOccupied' => false,
-            'type' => $room_type['name'],
+            'type' => $request->type,
         ];
-        $addData = $this->database->getReference($this->tablename)->push($createData);
-        $status = TableController::processDataAction('place','added',isset($addData));
+        $addResult = $this->database->getReference($this->tablename)->push($createData);
+        $status = TableController::processDataAction('place','added',isset($addResult));
         return redirect('admin/places')->with('status',$status);
     }
 
     public function update(PlaceCreateRequest $request,$id){
-        $currentPlace = $this->database->getReference($this->tablename)->getChild($id)->getValue();
-        $isUpdated = true;
-        if($currentPlace['number']!=$request['number']){
-            $bookings = $this->database->getReference('bookings')->getValue();
-            foreach ($bookings as $key => $value) {
-                if($value['place']==$currentPlace['number']){
-                    $updatedResult = $this->database->getReference('bookings'.'/'.$key)->update(['place'=>$request['number']]);
-                    $isUpdated = $isUpdated && isset($updatedResult);
-                }
-            }
-            $updatedResult = $this->database->getReference($this->tablename.'/'.$id)->update(['number'=>$request['number']]);
-            $isUpdated = $isUpdated && isset($updatedResult);
-        }
-        if($currentPlace['type']!=$request['type']){
-            $bookings = $this->database->getReference('bookings')->getValue();
-            foreach ($bookings as $key => $value) {
-                if($value['type']==$currentPlace['type']){
-                    $updatedResult = $this->database->getReference('bookings'.'/'.$key)->update(['type'=>$request['type']]);
-                    $isUpdated = $isUpdated && isset($updatedResult);
-                }
-            }
-            $updatedResult = $this->database->getReference($this->tablename.'/'.$id)->update(['type'=>$request['type']]);
-            $isUpdated = $isUpdated && isset($updatedResult);
-        }
-        $status = TableController::processDataAction('place','updated',$isUpdated);
+        $updateResult = $this->database->getReference($this->tablename.'/'.$id)->update([
+            'number' => $request['number'],
+            'type' => $request['type']
+        ]);
+        $status = TableController::processDataAction('place','updated',isset($updateResult));
         return redirect('admin/places')->with('status',$status);
     }
 
-    private function checkError($request){
-        $places = $this->database->getReference($this->tablename)->getValue();
-        $is_unique = true;
-        $is_type_exists = $this->database->getReference('rooms')->getSnapshot()->hasChild($request->room_type);
-        if($places)
-        foreach ($places as $key => $value) 
-            if($value['number']==$request->place_number)
-                $is_unique = false;
-        if(!$is_unique)
-            return [
-                'place_number' => 'Number must be unique'
-            ];
-        if(!$is_type_exists)
-            return [
-                'room_type' => 'Room type must be exists'
-            ];
+    public function destroy($id){
+        $removeResult = $this->database->getReference($this->tablename.'/'.$id)->remove();
+        return redirect('admin/places')->with('status',TableController::processDataAction('place','removed',isset($removeResult)));
     }
 }

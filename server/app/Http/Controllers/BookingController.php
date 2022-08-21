@@ -17,7 +17,7 @@ class BookingController extends Controller
     }
 
     public function create(BookingCreateRequest $request){
-        $room = $this->database->getReference('rooms')->getChild($request->type)->getValue();
+        $room = TableController::getRooms($this->database,$request->type);
         $room_name = $room['name'];
         $place_number = $this->boookingInThePlace($room_name);
         if(!$place_number)
@@ -53,7 +53,7 @@ class BookingController extends Controller
     public function form($id){
         $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
         $places = $this->getPlace($booking['type']);
-        $types = $this->database->getReference('rooms')->getValue();
+        $types = TableController::getRooms($this->database);
         return view('admin.booking.form',compact('booking','id','places','types'));
     }
 
@@ -63,7 +63,18 @@ class BookingController extends Controller
     }
 
     public function update(BookingCreateRequest $request,$id){
-        $updateResult = $this->database->getReference($this->tablename.'/'.$id)->update([
+        $currentBooking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
+        $updateResult = true;
+        if($currentBooking['place']!=$request['place']){
+            $places = TableController::getPlaces($this->database);
+            foreach($places as $key=>$value){
+                if($value['number']==$currentBooking['place'])
+                    $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
+                if($value['number']==$request['place'])
+                    $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>true]);
+            }
+        }
+        $updateResult = $updateResult && !!$this->database->getReference($this->tablename.'/'.$id)->update([
             'adults'=>$request->adults,
             'childs'=>$request->childs,
             'place'=>$request->place,
@@ -83,7 +94,7 @@ class BookingController extends Controller
     }
     
     public function destroy($id){
-        $places = $this->database->getReference('places')->getValue();
+        $places = TableController::getPlaces($this->database);
         $booking = $this->database->getReference($this->tablename)->getChild($id)->getValue();
         foreach($places as $key=>$value){
             if($value['number']==$booking['place'])
@@ -95,7 +106,7 @@ class BookingController extends Controller
     }
     
     private function getPlace($type){
-        $places = $this->database->getReference('places')->getValue();
+        $places = TableController::getPlaces($this->database);
         $placesOfType = array();
         foreach($places as $item)
             if($item['type']===$type)
@@ -109,7 +120,7 @@ class BookingController extends Controller
 
     private function boookingInThePlace($room){
         $place_number = 0;
-        $places = $this->database->getReference('places')->getValue();
+        $places = TableController::getPlaces($this->database);
         $place = "";
         foreach ($places as $key=>$value) {
             if($value['type']==$room&&!$value['isOccupied']){
@@ -124,7 +135,7 @@ class BookingController extends Controller
     }
 
     private function getTypeObject($typename){
-        $types = $this->database->getReference('rooms')->getValue();
+        $types = TableController::getRooms($this->database);
         $type = null;
         foreach ($types as $value) 
             if($value['name']===$typename)

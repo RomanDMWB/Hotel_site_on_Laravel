@@ -14,8 +14,8 @@ class PlaceCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'place_number' => ['required','integer','digits:3'],
-            'room_type' => ['required','string']
+            'number' => ['required','integer','digits:3'],
+            'type' => ['required','string']
         ];
     }
 }
