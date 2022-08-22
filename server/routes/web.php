@@ -8,6 +8,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 
 // User Routes
 Route::get('/', [WelcomeController::class,'show']);
@@ -17,6 +18,10 @@ Route::get('booking/{id}',[BookingController::class,'showBooking']);
 Route::get('booking/form/{type}',[BookingController::class,'form']);
 
 Route::get('room/{id}',[RoomController::class,'getInfo']);
+
+Route::post('login',[UserController::class,'login']);
+Route::post('register',[UserController::class,'register']);
+Route::get('logout',[UserController::class,'logout']);
 
 // Administration Routes
 Route::get('admin',[AdminController::class,'show']);
@@ -29,6 +34,7 @@ Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfTyp
 
 Route::post('admin/room/add',[RoomController::class,'add']);
 Route::post('admin/room/destroy/{id}',[RoomController::class,'destroy']);
+Route::post('admin/room/service/destroy/{room_id}/{service_id}',[RoomController::class,'destroyService']);
 Route::put('admin/room/update/{id}',[RoomController::class,'update']);
 Route::put('admin/room/update/service/{id}',[RoomController::class,'addService']);
 Route::get('admin/rooms',[RoomController::class,'show']);

@@ -32,14 +32,18 @@ form{
     margin:2em 0;
 }
 
+td.description{
+    width:30em;
+}
+
 td.action{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    position:relative;
 }
 
 .action>form{
-    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap:1em;
 
     button{
         border:0;

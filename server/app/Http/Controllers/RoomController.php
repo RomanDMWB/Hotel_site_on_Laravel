@@ -71,6 +71,14 @@ class RoomController extends Controller
         return redirect('admin/rooms')->with('status',$status);
     }
 
+    public function destroyService($room_id,$service_id){
+        if(count($this->database->getReference($this->roomTableName)->getChild($room_id)->getValue()['services'])==1)
+        $removeResult = $this->database->getReference($this->roomTableName.'/'.$room_id)->update(['services'=> '']);
+        else
+        $removeResult = $this->database->getReference($this->roomTableName.'/'.$room_id.'/services/'.$service_id)->remove();
+        return redirect('admin/rooms')->with('status',TableController::processDataAction('service','removed',isset($removeResult)));
+    }
+
     public function getInfo($id){
         $room = TableController::getRooms($this->database,$id);
         if($room)

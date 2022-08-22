@@ -32,9 +32,9 @@
             <td>{{ $item['place'] }}</td>
             <td>{{ $item['type'] }}</td>
             <td class="action">
-                <a href="{{ url('admin/booking/form/'.$key) }}" class="btn">Update</a>
                 <form action="{{ url('admin/booking/destroy/'.$key) }}" method="post">
                     @csrf
+                    <a href="{{ url('admin/booking/form/'.$key) }}" class="btn">Update</a>
                     <button type='submit' class="btn" id='destroy-button'>Delete</button>
                 </form>
             </td>

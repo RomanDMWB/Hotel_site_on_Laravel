@@ -1,3 +1,9 @@
+@guest
+<div class="auth">
+    @include('register/login')
+    @include('register/register')
+</div>
+@endguest
 <!-- Навигационная панель -->
 <nav>
         <!-- Верхняя панель -->
@@ -5,8 +11,13 @@
             <div class="panel-content">
                 <div id="local-date-time"></div>
                 <div class="user-panel">
-                    <a href="" class="btn btn-transition active">Login</a>
+                    @auth
+                    <a href="{{ url('logout') }}" class="btn btn-transition active">Log out</a>
+                    @endauth
+                    @guest
+                    <a href="" class="btn btn-transition active">Log in</a>
                     <a href="" class="btn btn-transition">Register</a>
+                    @endguest
                 </div>
             </div>
         </div>
