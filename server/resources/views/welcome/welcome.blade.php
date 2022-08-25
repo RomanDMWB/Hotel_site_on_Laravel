@@ -1,6 +1,9 @@
 @extends('layouts.main_page_layout')
 
 @section('content')
+@if(session('status'))
+<h4>{{ session('status') }}</h4>
+@endif
 <!-- Room categories content -->
 <div class="hotel-variants">
     <ul class="rooms">

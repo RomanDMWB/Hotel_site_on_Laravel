@@ -8,7 +8,6 @@ use Kreait\Firebase\Contract\Database;
 class WelcomeController extends Controller
 {
     private $database;
-
     public function __construct(Database $database)
     {
         $this->database = $database;
