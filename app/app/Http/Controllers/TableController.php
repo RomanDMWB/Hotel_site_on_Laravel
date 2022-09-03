@@ -13,6 +13,39 @@ class TableController extends Controller
         return ucfirst($tablename).' Not '.ucfirst($actionName);
     }
 
+    static public function getRooms($database,string $id=null){
+        $rooms = array();
+        if($id)
+            return TableController::getRoomByCode($database,$database->getReference('rooms')->getChild($id)->getValue());
+
+        foreach($database->getReference('rooms')->getValue() as $key => $value)
+            $rooms[$key] = TableController::getRoomByCode($database,$value);
+
+        return $rooms;
+    }
+
+    static public function getPlaces($database,string $id=null){
+        $places = array();
+        if($id)
+            return TableController::getPlaceByCode($database,$database->getReference('places')->getChild($id)->getValue());
+
+        foreach($database->getReference('places')->getValue() as $key=>$value)
+            $places[$key]=TableController::getPlaceByCode($database,$value);
+        
+        return $places;
+    } 
+
+    static public function getBookings($database,string $id=null){
+        $bookings = array();
+        if($id)
+            return TableController::getBookingByCode($database,$database->getReference('bookings')->getChild($id)->getValue());
+
+        foreach($database->getReference('bookings')->getValue() as $key=>$value)
+            $bookings[$key]=TableController::getBookingByCode($database,$value);
+        
+        return $bookings;
+    }
+
     static private function getRoomByCode($database,$value){
         $services = array();
         if($value['services']){
@@ -39,29 +72,23 @@ class TableController extends Controller
         return [
             'isOccupied' => $value['isOccupied'],
             'number' => $value['number'],
-            'type' => $database->getReference('rooms')->getChild($value['type'])->getValue()['name']
+            'type' => TableController::getTypeByCode($database,$value['type'])['name']
         ];
     }
 
-    static public function getRooms($database,string $id=null){
-        $rooms = array();
-        if($id)
-            return TableController::getRoomByCode($database,$database->getReference('rooms')->getChild($id)->getValue());
-
-        foreach($database->getReference('rooms')->getValue() as $key => $value)
-            $rooms[$key] = TableController::getRoomByCode($database,$value);
-
-        return $rooms;
+    static private function getBookingByCode($database,$value){
+        return [
+            'adults' => $value('adults'),
+            'childs' => $value('childs'),
+            'nights' => $value('nights'),
+            'date' => $value('date'),
+            'cost' => $value('cost'),
+            'place' => $database->getReference('places')->getChild($value['place'])->getValue()['number'],
+            'type' => TableController::getTypeByCode($database,$value['place'])['name']
+        ];
     }
 
-    static public function getPlaces($database,string $id=null){
-        $places = array();
-        if($id)
-            return TableController::getPlaceByCode($database,$database->getReference('places')->getChild($id)->getValue());
-
-        foreach($database->getReference('places')->getValue() as $key=>$value)
-            $places[$key]=TableController::getPlaceByCode($database,$value);
-        
-        return $places;
-    } 
+    static private function getTypeByCode($database,$value){
+        return $database->getReference('rooms')->getChild($value)->getValue();
+    }
 }

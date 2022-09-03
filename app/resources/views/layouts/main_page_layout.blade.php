@@ -18,6 +18,9 @@
 </head>
 <body>
     @include('navbar')
+    <div class="error">
+        @include('layouts.error_layout')
+    </div>
     <div class="content">
             @yield('content')
     </div>
