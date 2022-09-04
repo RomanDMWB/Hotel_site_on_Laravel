@@ -8,18 +8,18 @@
 
 1. С начала Вам неробходимо открыть командную строку на папке репозитория после клонирования и перейти на папку app.
 
-![](app/doc/images/1-image.PNG)
+<center><img src = 'app/doc/images/1-image.PNG'></center>
 
-1. Далее Вам необходимо выполнить команду `composer update` для обновления данных.
+2. Далее Вам необходимо выполнить команду `composer update` для обновления данных.
 
-![](app/doc/images/2-image.PNG)
+<center><img src = 'app/doc/images/2-image.PNG'></center>
 
-1. Затем необходимо выполнить команду `php artisan serve` для запуска сервера.
+3. Затем необходимо выполнить команду `php artisan serve` для запуска сервера.
 
-![](app/doc/images/3-image.PNG)
+<center><img src = 'app/doc/images/3-image.PNG'></center>
 
-1. Далее нужно перейти по адресу `http://localhost:8000/`.
+4. Далее нужно перейти по адресу `http://localhost:8000/`.
 
-![](app/doc/images/4-image.PNG)
+<center><img src = 'app/doc/images/4-image.PNG'></center>
 
 ## Все! Можете рассмотреть демо проект! Спасибо за внимание!
