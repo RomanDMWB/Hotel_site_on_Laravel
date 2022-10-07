@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\WelcomeController;
@@ -12,6 +13,10 @@ use App\Http\Controllers\UserController;
 
 // User Routes
 Route::get('/', [WelcomeController::class,'show']);
+
+//Auth Routes
+Route::post('login',[AuthController::class,"login"]);
+Route::post('logup',[AuthController::class,"logup"]);
 
 Route::post('booking',[BookingController::class,'create']);
 Route::get('booking/{id}',[BookingController::class,'showBooking']);

@@ -22,7 +22,7 @@
         @include('layouts.error_layout')
     </div>
     <div class="content">
-            @yield('content')
+        @yield('content')
     </div>
     @include('footer')
     <script src="{{ url('js/less.js') }}"></script>

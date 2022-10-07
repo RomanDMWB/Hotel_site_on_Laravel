@@ -3,6 +3,46 @@
 @panel-content-width:(@content-width)-(@navbar-padding-width-value)*2;
 @icon-size:5em;
 
+nav{
+    form{
+        display: none;
+        width:(@content-width)-2em;
+        margin:0 auto;
+        input{
+            margin-bottom:1em;
+        }
+        h4{
+            text-align: center;
+            color:@hover-link-text-color;
+        }
+    }
+}
+
+//Auth Options Style
+.auth-options{
+    background-color: @theme-color;
+    margin:0;
+    
+    div{
+        width:@content-width;
+        margin:0 auto;
+        height: 3em;
+        display: flex;
+        input{
+            display: none;
+        }
+        label:hover,input:checked+label{
+            color:@link-text-color;
+            background-color: @hover-button-text-color;
+        }
+        label{
+            padding:1em;
+            color:@hover-link-text-color;
+            background-color: transparent;
+        }
+    }
+}
+
 .top-panel{
     background-color: @theme-color;
 }
@@ -19,12 +59,6 @@
 .user-panel{
     display: flex;
     justify-content: space-between;
-}
-
-#local-date-time{
-    color:@text-color;
-    text-align: center;
-    align-self: center;
 }
 
 .active{
@@ -44,6 +78,7 @@
     background-repeat: no-repeat;
     width: @icon-size;
     height: @icon-size;
+    border-radius: 50%;
 }
 
 .nav-menu{
