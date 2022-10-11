@@ -37,10 +37,15 @@ class TableController extends Controller
 
     static public function getBookings($database,string $id=null){
         $bookings = array();
+        $users = $database->getReference('users');
+        $userBookings = null;
+        foreach ($users as $key => $value) 
+            if($value['id']==$_COOKIE['user'])
+                $userBookings = $value['bookings'];
         if($id)
-            return TableController::getBookingByCode($database,$database->getReference('bookings')->getChild($id)->getValue());
+            return TableController::getBookingByCode($database,$userBookings->getChild($id)->getValue());
 
-        foreach($database->getReference('bookings')->getValue() as $key=>$value)
+        foreach($userBookings->getValue() as $key=>$value)
             $bookings[$key]=TableController::getBookingByCode($database,$value);
         
         return $bookings;
@@ -83,7 +88,7 @@ class TableController extends Controller
             'nights' => $value('nights'),
             'date' => $value('date'),
             'cost' => $value('cost'),
-            'place' => $database->getReference('places')->getChild($value['place'])->getValue()['number'],
+            'place' => TableController::getPlaces($database,$value['place'])['number'],
             'type' => TableController::getTypeByCode($database,$value['place'])['name']
         ];
     }

@@ -5,7 +5,6 @@
 
 nav{
     form{
-        display: none;
         width:(@content-width)-2em;
         margin:0 auto;
         input{
@@ -31,11 +30,11 @@ nav{
         input{
             display: none;
         }
-        label:hover,input:checked+label{
+        label:hover,a:hover,input:checked+label{
             color:@link-text-color;
             background-color: @hover-button-text-color;
         }
-        label{
+        label,a{
             padding:1em;
             color:@hover-link-text-color;
             background-color: transparent;

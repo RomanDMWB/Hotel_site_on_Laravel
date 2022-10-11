@@ -18,4 +18,11 @@ class WelcomeController extends Controller
         $rooms = TableController::getRooms($this->database);
         return view('welcome.index',compact('rooms','services'));
     }
+    
+    public function showWithError(){
+        $services = $this->database->getReference('services')->getValue();
+        $rooms = TableController::getRooms($this->database);
+        $error = 'С начала необходимо войти в систему';
+        return view('welcome.index',compact('rooms','services','error'));
+    }
 }

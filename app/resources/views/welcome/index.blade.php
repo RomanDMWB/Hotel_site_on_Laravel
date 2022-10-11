@@ -9,7 +9,7 @@
     <ul class="rooms">
         @if($rooms)
         @foreach($rooms as $key => $item)
-        <li class="hotel-room" style="background-image:url('{{ $item['image'] }}')">
+        <li class="hotel-room" style="background-image:url('{{ url($item['image']) }}')">
             <div class="room-info">
                 <div class="room-header">
                     <p class='room-header-text'>{{ $item['name'] }}</p>
@@ -86,11 +86,6 @@
         <div class="heading">
             Booking your perfect room
         </div>
-        @if($errors->any())
-            <div class="error-text">
-                {{ implode('', $errors->all(':message')) }}
-            </div>
-        @endif
         <form action="{{ url('booking') }}" method="post">
             @csrf
             <div class="form-group">

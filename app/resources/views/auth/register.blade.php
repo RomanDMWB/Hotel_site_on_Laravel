@@ -1,4 +1,4 @@
-<form action="{{ url('logup') }}" method="post" class="logup-form">
+<form action="{{ url('logup') }}" method="post" class="logup-form" style="display:none;">
     <h4>Регистрация</h4>
     @csrf
     <div class="form-group">

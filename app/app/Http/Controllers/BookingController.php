@@ -111,6 +111,10 @@ class BookingController extends Controller
         $status = TableController::processDataAction('booking','removed',isset($removedData));
         return redirect('admin/bookings')->with('status',$status);
     }
+
+    public function formType($type){
+        return view('formType',compact('type'));
+    }
     
     private function getPlace($type){
         $places = TableController::getPlaces($this->database);

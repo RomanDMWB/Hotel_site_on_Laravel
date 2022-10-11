@@ -9,27 +9,24 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
 
 // User Routes
-Route::get('/', [WelcomeController::class,'show']);
+Route::get('/', [WelcomeController::class,'show'])->name('welcome');
+Route::get('/welcome/error', [WelcomeController::class,'showWithError'])->name('welcome-error');
 
 //Auth Routes
 Route::post('login',[AuthController::class,"login"]);
 Route::post('logup',[AuthController::class,"logup"]);
+Route::get('logout',[AuthController::class,'logout'])->middleware('auth');
 
-Route::post('booking',[BookingController::class,'create']);
-Route::get('booking/{id}',[BookingController::class,'showBooking']);
-Route::get('booking/form/{type}',[BookingController::class,'form']);
+Route::post('booking',[BookingController::class,'create'])->middleware('auth');
+Route::get('booking/{id}',[BookingController::class,'showBooking'])->middleware('auth');
+Route::get('booking/form/{type}',[BookingController::class,'formType'])->middleware('auth');
 
-Route::get('room/{id}',[RoomController::class,'getInfo']);
-
-Route::post('login',[UserController::class,'login']);
-Route::post('register',[UserController::class,'register']);
-Route::get('logout',[UserController::class,'logout']);
+Route::get('room/{id}',[RoomController::class,'getInfo'])->middleware('auth');
 
 // Administration Routes
-Route::get('admin',[AdminController::class,'show']);
+Route::get('admin',[AdminController::class,'show'])->middleware('auth');
 
 Route::put('admin/booking/update/{id}',[BookingController::class,'update']);
 Route::post('admin/booking/destroy/{id}',[BookingController::class,'destroy']);
