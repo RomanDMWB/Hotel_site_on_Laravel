@@ -1,16 +1,20 @@
 <!-- Навигационная панель -->
+<?php 
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\User;
+ ?>
 <nav>
     @include('auth.login')
     @include('auth.register')
     <div class="auth-options">
         <div>
-            @if(!isset($_COOKIE["user"]))
+            @if(Admin::isAdmin()||User::isUser())
+            <a href="{{ url('logout') }}" onclick="(function(e){if(!confirm('Вы точно хотите выйти?'))e.preventDefault();})(event)" id="log-out">Log out</a>
+            @else
             <input type="radio" name="auth" id="log-in" />
             <label for="log-in">Log in</label>
             <input type="radio" name="auth" id="log-up" />
             <label for="log-up">Log up</label>
-            @else
-            <a href="{{ url('logout') }}" onclick="(function(e){if(!confirm('Вы точно хотите выйти?'))e.preventDefault();})(event)" id="log-out">Log out</a>
             @endif
         </div>
     </div>
@@ -20,9 +24,7 @@
                 <div class="company-icon"></div>
             </a>
             <ul class="nav-menu">
-                @if(isset($_COOKIE["user"]))
-                    <li class="nav-item"><a href="{{ url('admin/bookings') }}">Booking</a></li>
-                @endif
+                <li class="nav-item"><a href="{{ url('admin/bookings') }}">Booking</a></li>
                 <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
                 <li class="nav-item"><a href="{{ url('admin') }}">Administration</a></li>
                 <li class="nav-item"><a href="{{ url('admin/contacts') }}">Contacts</a></li>
@@ -39,4 +41,5 @@
         document.querySelector(".login-form").style.display = "none";
         document.querySelector(".logup-form").style.display = "block";
     });
+
 </script>

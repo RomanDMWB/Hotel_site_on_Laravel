@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Kreait\Firebase\Contract\Database;
 
 class AdminController extends Controller

@@ -6,9 +6,11 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Request\CreateUser;
-use Kreait\Firebase\Auth\CreateSessionCookie\FailedToCreateSessionCookie;
-use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
 use Kreait\Firebase\Contract\Database;
+use Illuminate\Support\Facades\Auth as LaravelAuth;
+use Kreait\Firebase\Exception\InvalidArgumentException; 
+use Kreait\Firebase\Auth\SignIn\FailedToSignIn;
+use Kreait\Firebase\Auth\CreateSessionCookie\FailedToCreateSessionCookie;
 
 class AuthController extends Controller
 {
@@ -18,31 +20,28 @@ class AuthController extends Controller
     {
         $this->auth = $auth;
         $this->database = $database;
+        $this->middleware('guest')->except('logout');
     }
 
     public function login(LoginRequest $request){
         try{
             $signResult = $this->auth->signInWithEmailAndPassword($request->email,$request->password);
-            try {
-                $oneWeek = new \DateInterval('P7D');
-                $sessionCookieString = $this->auth->createSessionCookie($signResult->idToken(), $oneWeek);
-                setcookie('user',$sessionCookieString);
-                return redirect('/');
-            } catch (FailedToCreateSessionCookie $e) {
-                return back()->withErrors(['error'=>$e->getMessage()]);
-            }
         }
-        catch (FailedToSignIn $e){
+        catch(FailedToSignIn $e){
             return back()->withErrors(['error'=>$e->getMessage()]);
         }
-        catch (Kreait\Firebase\Exception\InvalidArgumentException $e){
+        catch(InvalidArgumentException $e){
             return back()->withErrors(['error'=>$e->getMessage()]);
         }
-        // try {
-        //     $verifiedSessionCookie = $this->auth->verifySessionCookie($sessionCookieString);
-        // } catch (FailedToVerifySessionCookie $e) {
-        //     echo 'The Session Cookie is invalid: '.$e->getMessage();
-        // }
+        $oneWeek = new \DateInterval('P7D');
+
+        try {
+            $sessionCookieString = $this->auth->createSessionCookie($signResult->idToken(), $oneWeek);
+            setcookie('user',$sessionCookieString);
+        } catch (FailedToCreateSessionCookie $e) {
+            echo $e->getMessage();
+        }
+        return redirect('/');
     }
 
     public function logup(RegisterRequest $request){
@@ -55,16 +54,11 @@ class AuthController extends Controller
         } catch (\Throwable $e) {
             return back()->withErrors(['errors'=>$e->getMessage()]);
         }
-        $this->database->getReference("users")->push([
-            'email' => $request->email,
-            'bookings' => ""
-        ]);
-    
         return redirect('/');
     }
 
     public function logout(){
-        setcookie('user');
+        setcookie('user','');
         return redirect('/');
     }
 }
