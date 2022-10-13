@@ -24,10 +24,15 @@ use App\Http\Middleware\User;
                 <div class="company-icon"></div>
             </a>
             <ul class="nav-menu">
-                <li class="nav-item"><a href="{{ url('admin/bookings') }}">Booking</a></li>
+                @if(!Admin::isAdmin())
+                <li class="nav-item"><a href="{{ url('bookings') }}">Bookings</a></li>
+                @endif
                 <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
+                @if(Admin::isAdmin())
                 <li class="nav-item"><a href="{{ url('admin') }}">Administration</a></li>
-                <li class="nav-item"><a href="{{ url('admin/contacts') }}">Contacts</a></li>
+                @endif
+                <li class="nav-item"><a href="{{ url('contacts') }}">Contacts</a></li>
+                <li class="nav-item"><a href="{{ url('about') }}">About</a></li>
             </ul>
         </div>
     </div>

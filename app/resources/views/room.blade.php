@@ -13,8 +13,8 @@
             <p class="name">Cost:</p>
             <p class="content">{{ $room['cost'] }} ₽</p>
         </div>
-        <a href="" class="btn">BOOKING NOW</a>
-    </div> 
+        <a href="{{ url('') }}" class="btn">BOOKING NOW</a>
+    </div>
 </div>
 <div class="room-full-information">
     <p class="header">{{ $room['name'] }}</p>
@@ -27,10 +27,10 @@
         @if($room['services'])
         <ul class="services">
             @foreach($room['services'] as $item)
-                <li>
-                    <i>{!! $item['icon'] !!}</i>
-                    <p>{{ $item['name'] }}</p>
-                </li>
+            <li>
+                <i>{!! $item['icon'] !!}</i>
+                <p>{{ $item['name'] }}</p>
+            </li>
             @endforeach
         </ul>
         @else

@@ -8,12 +8,19 @@ body{
     margin: 0;
     background-color: @body-color;
     font-family: "Roboto", "Arial", sans-serif;
-    height: max(100vh,100%);
+    height: 100%;
+    min-height: 100vh;
 }
 
 body>.content{
     display: flex;
     flex-direction: column;
+}
+
+h1{
+    text-align: center;
+    color:@header-text-color;
+    font-weight: bold;
 }
 
 li{

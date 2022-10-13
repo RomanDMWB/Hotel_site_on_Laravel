@@ -17,7 +17,7 @@ class Admin
         $verifiedSessionCookie = $auth->verifySessionCookie($_COOKIE['user']);
         $uid = $verifiedSessionCookie->claims()->get('sub');
         $claims = $auth->getUser($uid)->customClaims;
-        if(array_key_exists('admin',$claims)||empty($claims))
+        if(!array_key_exists('admin',$claims)||empty($claims))
             return false;
         return true;
     }
@@ -30,12 +30,14 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
+        if(!array_key_exists('user',$_COOKIE))
+            return redirect()->route('welcome-error');
         $auth = app('firebase.auth');
         $verifiedSessionCookie = $auth->verifySessionCookie($_COOKIE['user']);
         $uid = $verifiedSessionCookie->claims()->get('sub');
         $claims = $auth->getUser($uid)->customClaims;
-        if(array_key_exists('admin',$claims)||empty($claims))
-            return redirect()->route('welcome-error');
+        if(!array_key_exists('admin',$claims)||empty($claims))
+        return redirect()->route('welcome-error');
         if($claims['admin'])
             return $next($request);
         return redirect()->route('welcome-error');

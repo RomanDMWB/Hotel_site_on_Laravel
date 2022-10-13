@@ -1,62 +1,59 @@
 @import 'config.less';
+@darken-color:darken(@form-color, 15%);
 
 footer{
+.contact-list{
     background-image: url('../images/footer-image-1.jpg');
     background-position: top;
     background-repeat: no-repeat;
     background-size: 100vw;
-    height: auto;
-    padding-top: 1em;
     
-    p{
-        margin: 0;
-    }
-
     .contacts{
-        width: @content-width;
-        margin:2em auto;
+        padding: 1em 0;
+        margin:0 auto;
+        width:@content-width;
         display: grid;
         grid-template-columns: repeat(3,1fr);
         gap: 2em;
-
+        
         li{
             padding:1em;
             background-color: @form-color;
             color:@body-color;
             display: grid;
-            grid-template-columns: 3em 1fr;
-            grid-template-rows: min-content min-content;
+            grid-template-rows: 3em repeat(2,1em);
             gap:1em;
+            transition: background-color 500ms ease;
         }
 
+        li:hover{
+            background-color: @darken-color;
+        }
+        
         .icon{
-            background-color: rgba(0, 0, 0, 0.2);
-            grid-row-start: 1;
-            grid-row-end: 3;
-            padding:1px;
+            width: 2em;
+            background-color: @darken-color;
+            padding: 1px;
             text-align: center;
+            margin: 0 auto;
         }
-
-        .name{
-            font-weight: 600;
-        }
-
     }
-
+    
+}
+    p{
+        margin: 0;
+    }
     .organization-info{
         background-color: #05090c;
-        padding: 0 2em;
         color: aliceblue;
         text-align: center;
         
         p{
             padding:1em 0;
         }
-
+    
         a{
             color:@header-text-color;
         }
     }
 }
-
-

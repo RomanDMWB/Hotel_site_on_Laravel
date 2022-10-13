@@ -34,7 +34,7 @@ class AuthController extends Controller
             return back()->withErrors(['error'=>$e->getMessage()]);
         }
         $oneWeek = new \DateInterval('P7D');
-
+        $this->auth->setCustomUserClaims($signResult->firebaseUserId(), ['admin' => true]);
         try {
             $sessionCookieString = $this->auth->createSessionCookie($signResult->idToken(), $oneWeek);
             setcookie('user',$sessionCookieString);

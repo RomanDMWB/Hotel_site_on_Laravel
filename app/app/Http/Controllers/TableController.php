@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Kreait\Firebase\Contract\Database;
 
 class TableController extends Controller
 {
@@ -13,7 +14,7 @@ class TableController extends Controller
         return ucfirst($tablename).' Not '.ucfirst($actionName);
     }
 
-    static public function getRooms($database,string $id=null){
+    static public function getRooms(Database $database,string $id=null){
         $rooms = array();
         if($id)
             return TableController::getRoomByCode($database,$database->getReference('rooms')->getChild($id)->getValue());
@@ -24,7 +25,7 @@ class TableController extends Controller
         return $rooms;
     }
 
-    static public function getPlaces($database,string $id=null){
+    static public function getPlaces(Database $database,string $id=null){
         $places = array();
         if($id)
             return TableController::getPlaceByCode($database,$database->getReference('places')->getChild($id)->getValue());
@@ -35,23 +36,20 @@ class TableController extends Controller
         return $places;
     } 
 
-    static public function getBookings($database,string $id=null){
+    static public function getBookings(Database $database,string $id=null){
         $bookings = array();
         $users = $database->getReference('users');
         $userBookings = null;
-        foreach ($users as $key => $value) 
-            if($value['id']==$_COOKIE['user'])
-                $userBookings = $value['bookings'];
-        if($id)
-            return TableController::getBookingByCode($database,$userBookings->getChild($id)->getValue());
-
-        foreach($userBookings->getValue() as $key=>$value)
-            $bookings[$key]=TableController::getBookingByCode($database,$value);
+        foreach($users as $userKey=>$user)
+            foreach($user['bookings'] as $key=>$value){
+                $customKey = substr($userKey,0,strlen($userKey)/2).substr($key,0,strlen($key)/2);
+                $bookings[$customKey]=TableController::getBookingByCode($database,$value,$user['email']);
+            }
         
         return $bookings;
     }
 
-    static private function getRoomByCode($database,$value){
+    static private function getRoomByCode(Database $database,$value){
         $services = array();
         if($value['services']){
             foreach ($value['services'] as $key => $service) {
@@ -73,7 +71,7 @@ class TableController extends Controller
         return $room;
     }
 
-    static private function getPlaceByCode($database,$value){
+    static private function getPlaceByCode(Database $database,$value){
         return [
             'isOccupied' => $value['isOccupied'],
             'number' => $value['number'],
@@ -81,8 +79,9 @@ class TableController extends Controller
         ];
     }
 
-    static private function getBookingByCode($database,$value){
+    static private function getBookingByCode(Database $database,$value,$email){
         return [
+            'email' => $email,
             'adults' => $value('adults'),
             'childs' => $value('childs'),
             'nights' => $value('nights'),
@@ -93,7 +92,7 @@ class TableController extends Controller
         ];
     }
 
-    static private function getTypeByCode($database,$value){
+    static public function getTypeByCode(Database $database,$value){
         return $database->getReference('rooms')->getChild($value)->getValue();
     }
 }

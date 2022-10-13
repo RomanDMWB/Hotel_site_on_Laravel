@@ -23,6 +23,11 @@ class User
      */
     public function handle(Request $request, Closure $next)
     {
+        if(!array_key_exists('user',$_COOKIE))
+        return redirect()->route('welcome-error');
+        $auth = app('firebase.auth');
+        if($auth->verifySessionCookie($_COOKIE['user']))
         return $next($request);
+        return redirect()->route('welcome-error');
     }
 }

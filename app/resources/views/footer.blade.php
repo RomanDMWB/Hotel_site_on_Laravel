@@ -1,4 +1,6 @@
 <footer>
+    @if(!$isContactPage)
+    <div class="contact-list">
         <ul class="contacts">
             @foreach($contacts as $item)
             <li>
@@ -8,6 +10,8 @@
             </li>
             @endforeach
         </ul>
+    </div>
+    @endif
     <div class="organization-info">
         <p>© 2021 <a href="{{ url('/') }}">Hotel Room</a> - All Rights Reserved - Made By <a href="https://vk.com/korotkoe_imichko">Roman</a></p>
     </div>

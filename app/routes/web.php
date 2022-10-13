@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\WelcomeController;
@@ -14,13 +16,20 @@ use App\Http\Controllers\AdminController;
 Route::get('/', [WelcomeController::class,'show'])->name('welcome');
 Route::get('/welcome/error', [WelcomeController::class,'showWithError'])->name('welcome-error');
 
+//All user info
+Route::get('about',function(){
+    $content = File::get('../resources/files/text.txt');
+    return view('all.about',compact('content'));
+});
+Route::get('contacts',[User::class,'contacts']);
+Route::get('room/{id}',[RoomController::class,'getInfo']);
+
 //Auth Routes
 Route::post('login',[AuthController::class,"login"]);
 Route::post('logup',[AuthController::class,"logup"]);
 Route::get('logout',[AuthController::class,'logout'])->middleware('user');
 
-Route::get('room/{id}',[RoomController::class,'getInfo']);
-
+Route::get('bookings',[BookingController::class,'bookings'])->middleware('user');
 Route::post('booking',[BookingController::class,'create'])->middleware('user');
 Route::get('booking/{id}',[BookingController::class,'showBooking'])->middleware('user');
 Route::get('booking/form/{type}',[BookingController::class,'formType'])->middleware('user');

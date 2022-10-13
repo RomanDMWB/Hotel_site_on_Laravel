@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="ticket-container">
+        <h1>Booking №{{ $id }}</h1>
         <div class="content">
             <p class="name">Arrival Date</p>
             <p class="content">{{ $booking['date'] }}</p>
@@ -20,9 +21,9 @@
             <p class="name">Children Count</p>
             <p class="content">{{ $booking['childs'] }}</p>
             <p class="name">Room Type</p>
-            <p class="content">{{ $booking['type'] }}</p>
+            <p class="content">{{ $type }}</p>
             <p class="name">Place Number</p>
-            <p class="content">{{ $booking['place'] }}</p>
+            <p class="content">{{ $place }}</p>
             <p class="name">Total</p>
             <p class="content">{{ $booking['cost'] }}</p>
         </div>
