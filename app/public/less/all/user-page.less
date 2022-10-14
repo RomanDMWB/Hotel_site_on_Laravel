@@ -1,0 +1,19 @@
+@import "../config.less";
+
+form{
+    width:(@content-width)/2;
+    margin:2em auto;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:2em;
+
+    input{
+        padding:1em;
+    }
+
+    label{
+        font-weight: bold;
+        text-align: center;
+        color: @header-text-color;
+    }
+}

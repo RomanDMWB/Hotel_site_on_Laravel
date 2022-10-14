@@ -1,5 +1,5 @@
 <?php 
-$isContactPage = explode('/',$_SERVER['REQUEST_URI'])[1]==='contacts'
+$isContactPage = explode('/',$_SERVER['REQUEST_URI'])[1]==='contacts';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +15,9 @@ $isContactPage = explode('/',$_SERVER['REQUEST_URI'])[1]==='contacts'
     @endif
     @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='about')
     <link rel="stylesheet" type="text/less" href="{{ url('less/all/about.less') }}">
+    @endif
+    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='user')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/all/user-page.less') }}">
     @endif
     @if($isContactPage)
     <link rel="stylesheet" type="text/less" href="{{ url('less/all/contacts.less') }}">

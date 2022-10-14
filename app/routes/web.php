@@ -29,10 +29,15 @@ Route::post('login',[AuthController::class,"login"]);
 Route::post('logup',[AuthController::class,"logup"]);
 Route::get('logout',[AuthController::class,'logout'])->middleware('user');
 
-Route::get('bookings',[BookingController::class,'bookings'])->middleware('user');
-Route::post('booking',[BookingController::class,'create'])->middleware('user');
-Route::get('booking/{id}',[BookingController::class,'showBooking'])->middleware('user');
-Route::get('booking/form/{type}',[BookingController::class,'formType'])->middleware('user');
+//User Routes
+Route::group(['middleware'=>['user']],function(){
+    Route::get('bookings',[BookingController::class,'bookings']);
+    Route::post('booking',[BookingController::class,'create']);
+    Route::get('booking/{id}',[BookingController::class,'showBooking']);
+    Route::get('booking/form/{type}',[BookingController::class,'formType']);
+    Route::get('user/page',[User::class,'page']);
+    Route::get('user/save',[User::class,'save']);
+});
 
 // Administration Routes
 Route::group(['middleware'=>['admin']],function(){
@@ -42,7 +47,6 @@ Route::group(['middleware'=>['admin']],function(){
     Route::post('admin/booking/destroy/{id}',[BookingController::class,'destroy']);
     Route::get('admin/bookings',[BookingController::class,'show']);
     Route::get('admin/booking/form/{id}',[BookingController::class,'form']);
-    Route::get('admin/booking/type/{type}',[BookingController::class,'getPLacesOfType']);
     
     Route::post('admin/room/add',[RoomController::class,'add']);
     Route::post('admin/room/destroy/{id}',[RoomController::class,'destroy']);

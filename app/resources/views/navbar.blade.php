@@ -1,15 +1,18 @@
 <!-- Навигационная панель -->
-<?php 
+<?php
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\User;
+$admin = Admin::getAdmin();
+$user = User::getUser();
  ?>
 <nav>
     @include('auth.login')
     @include('auth.register')
     <div class="auth-options">
         <div>
-            @if(Admin::isAdmin()||User::isUser())
+            @if($admin||$user)
             <a href="{{ url('logout') }}" onclick="(function(e){if(!confirm('Вы точно хотите выйти?'))e.preventDefault();})(event)" id="log-out">Log out</a>
+            <a href="{{ url('user/page') }}">{{$user->displayName}}</a>
             @else
             <input type="radio" name="auth" id="log-in" />
             <label for="log-in">Log in</label>
@@ -24,11 +27,11 @@ use App\Http\Middleware\User;
                 <div class="company-icon"></div>
             </a>
             <ul class="nav-menu">
-                @if(!Admin::isAdmin())
+                @if(!$admin)
                 <li class="nav-item"><a href="{{ url('bookings') }}">Bookings</a></li>
                 @endif
                 <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
-                @if(Admin::isAdmin())
+                @if(Admin::getAdmin())
                 <li class="nav-item"><a href="{{ url('admin') }}">Administration</a></li>
                 @endif
                 <li class="nav-item"><a href="{{ url('contacts') }}">Contacts</a></li>

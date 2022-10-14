@@ -2,7 +2,7 @@
 
 @section('content')
 @if(session('status'))
-    <p>{{ session('status') }}</p>
+<p>{{ session('status') }}</p>
 @endif
 @if($bookings)
 <table>
@@ -16,6 +16,7 @@
             <th>Nights</th>
             <th>Place</th>
             <th>Type</th>
+            <th>Email</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -31,10 +32,11 @@
             <td>{{ $item['nights'] }}</td>
             <td>{{ $item['place'] }}</td>
             <td>{{ $item['type'] }}</td>
+            <td>{{ $item['email'] }}</td>
             <td class="action">
-                <form action="{{ url('admin/booking/destroy/'.$key) }}" method="post">
+                <form action="{{ url('admin/booking/destroy/'.$item['booking']) }}" method="post">
                     @csrf
-                    <a href="{{ url('admin/booking/form/'.$key) }}" class="btn">Update</a>
+                    <a href="{{ url('admin/booking/form/'.$item['booking']) }}" class="btn">Update</a>
                     <button type='submit' class="btn" id='destroy-button'>Delete</button>
                 </form>
             </td>

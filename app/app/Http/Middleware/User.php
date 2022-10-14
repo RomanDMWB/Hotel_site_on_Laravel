@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Cookie;
 
 class User
 {
-    public static function isUser(){
+    public static function getUser(){
         if(!array_key_exists('user',$_COOKIE))
             return false;
         $auth = app('firebase.auth');
-        return $auth->verifySessionCookie($_COOKIE['user']);
+        ;
+        $uid = $auth->verifySessionCookie($_COOKIE['user'])->claims()->get('sub');
+        return $auth->getUser($uid);
     }
     /**
      * Handle an incoming request.

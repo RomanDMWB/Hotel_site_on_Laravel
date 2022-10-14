@@ -13,7 +13,7 @@ class BookingController extends Controller
     public function __construct(Database $database)
     {
         $this->database = $database;
-        $this->bookings = User::getCurrentUser($database)->getChild('bookings');
+        $this->bookings = $this->getCurrentUser($database);
     }
 
     public function create(BookingCreateRequest $request){
@@ -87,70 +87,72 @@ class BookingController extends Controller
         ]);
     }
     
-    // public function form($id){
-    //     // TODO full
-    //     $places = $this->getPlace($booking['type']);
-    //     $types = TableController::getRooms($this->database);
-    //     return view('admin.booking.form',compact('booking','id','places','types'));
-    // }
+    public function form($id){
+        $booking = TableController::getBookings($this->database,$id);
+        $currentType = $booking['type'];
+        $places = TableController::getPlaces($this->database);
+        $currentPlaces = array();
+        foreach ($places as $key => $value) {
+            if($value['type']===$currentType)
+                $currentPlaces[$key]=$value;
+        }
+        $places = $currentPlaces;
+        $types = TableController::getRooms($this->database);
+        return view('admin.booking.form',compact('booking','id','places','types'));
+    }
 
     public function show(){
         $bookings = TableController::getBookings($this->database);
         return view('admin.booking.index',compact('bookings'));
     }
 
-    // public function update(BookingCreateRequest $request,$id){
-    //     //todo full
-    //     $updateResult = true;
-    //     if($currentBooking['place']!=$request['place']){
-    //         $places = TableController::getPlaces($this->database);
-    //         foreach($places as $key=>$value){
-    //             if($value['number']==$currentBooking['place'])
-    //                 $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
-    //             if($value['number']==$request['place'])
-    //                 $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>true]);
-    //         }
-    //     }
+    public function update(BookingCreateRequest $request,$id){
+        $currentBooking = TableController::getBookings($this->database,$id);
+        $updateResult = true;
+        if($currentBooking['place']!=$request->place){
+            $places = TableController::getPlaces($this->database);
+            foreach($places as $key=>$value){
+                if($value['number']==$currentBooking['place'])
+                    $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
+                if($value['number']==$request->place)
+                    $updateResult = $updateResult && !!$this->database->getReference('places/'.$key)->update(['isOccupied'=>true]);
+            }
+        }
 
-    //     $place = null;
-    //     foreach($this->database->getReference('places') as $key=>$value)
-    //         if($value['number'] == $request->place){
-    //             $place = $key;
-    //             break 1;
-    //         }
-
-    //     $updateResult = $updateResult && !!$this->database->getReference($this->tablename.'/'.$id)->update([
-    //         'adults'=>$request->adults,
-    //         'childs'=>$request->childs,
-    //         'place'=>$place,
-    //         'cost'=>$this->getCost($request,$this->getTypeObject($request->type)['cost']),
-    //         'nights'=>$request->nights,
-    //     ]);
-    //     $status = TableController::processDataAction('booking','updated',isset($updateResult));
-    //     return redirect('admin/bookings')->with('status',$status);
-    // }
-    
-    public function getPLacesOfType($type){
-        $places = array();
-        foreach(TableController::getPlaces($this->database) as $item)
-            if($item['type']===$type)
-                $places[]=$item;
-        return response()->json([
-            'places' => $places
-        ],200);
+        $place = null;
+        $type = null;
+        foreach($this->database->getReference('places')->getValue() as $key=>$value)
+            if($value['number'] == $request->place){
+                $place = $key;
+                $type = $value['type'];
+                break 1;
+            }
+        
+        if($type)
+            $type = TableController::getRooms($this->database,$type);
+        
+        $updateResult = $updateResult && !!TableController::getBookings($this->database,$id,true)->update([
+            'adults'=>$request->adults,
+            'childs'=>$request->childs,
+            'place'=>$place,
+            'cost'=>$this->getCost($request,$type['cost']),
+            'nights'=>$request->nights,
+        ]);
+        $status = TableController::processDataAction('booking','updated',isset($updateResult));
+        return redirect('admin/bookings')->with('status',$status);
     }
     
-    // public function destroy($id){
-    //     $places = TableController::getPlaces($this->database);
-    //     // todo full
-    //     foreach($places as $key=>$value){
-    //         if($value['number']==$booking['place'])
-    //             $this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
-    //     }
-    //     $removedData = $this->bookings->getChild->remove();
-    //     $status = TableController::processDataAction('booking','removed',isset($removedData));
-    //     return redirect('admin/bookings')->with('status',$status);
-    // }
+    public function destroy($id){
+        $places = TableController::getPlaces($this->database);
+        $booking = TableController::getBookings($this->database,$id);
+        foreach($places as $key=>$value){
+            if($value['number']==$booking['place'])
+                $this->database->getReference('places/'.$key)->update(['isOccupied'=>false]);
+        }
+        $removedData = TableController::getBookings($this->database,$id,true)->remove();
+        $status = TableController::processDataAction('booking','removed',isset($removedData));
+        return redirect('admin/bookings')->with('status',$status);
+    }
 
     public function formType($type){
         return view('formType',compact('type'));
@@ -172,5 +174,20 @@ class BookingController extends Controller
         if($place)
             $this->database->getReference('places/'.$place)->update(['isOccupied' => true]);
         return $place;
+    }
+
+    private function getCurrentUser($database){
+        if(empty($_COOKIE)||!array_key_exists('user',$_COOKIE))return false;
+        $auth = app('firebase.auth');
+        $cookie = $auth->verifySessionCookie($_COOKIE['user']);
+        $uid = $cookie->claims()->get('sub');
+        $email = $auth->getUser($uid)->email;
+        $users = $database->getReference('users')->getValue();
+        foreach ($users as $key => $user) {
+            if($user['email']===$email){
+                return $database->getReference('users/'.$key)->getChild('bookings');
+            }
+        }
+        return false;
     }
 }
