@@ -13,7 +13,7 @@
             <p class="name">Cost:</p>
             <p class="content">{{ $room['cost'] }} ₽</p>
         </div>
-        <a href="{{ url('') }}" class="btn">BOOKING NOW</a>
+        <a href="{{ url('booking/form/'.$id) }}" class="btn">BOOKING NOW</a>
     </div>
 </div>
 <div class="room-full-information">

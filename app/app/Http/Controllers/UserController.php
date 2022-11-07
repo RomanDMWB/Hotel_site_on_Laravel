@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Kreait\Firebase\Auth;
 use Kreait\Firebase\Contract\Database;
 use Throwable;
 
-class User extends Controller
+class UserController extends Controller
 {
     private $database;
-    public function __construct(Database $database,Auth $auth){
+    public function __construct(Database $database){
         $this->database = $database;
     }
 
@@ -27,13 +26,11 @@ class User extends Controller
     public function save(Request $request){
         $user = \App\Http\Middleware\User::getUser();
         $auth = app('firebase.auth');
-        dd($request);
         try{
             if($user->email != $request->email)
                 $auth->changeUserEmail($user->uid,$request->email);
             if($user->displayName != $request->displayName){
-                dd($user);
-                // $updatedUser = $auth->updateUser($uid, ['displayName'=>$request->displayName]);
+                $updatedUser = $auth->updateUser($user->uid, ['displayName'=>$request->displayName]);
             }
             if($request->password)
                 $auth->changeUserPassword($user->uid,$request->email);
@@ -41,5 +38,22 @@ class User extends Controller
         catch(Throwable $e){
             return back()->withErrors(['error'=>$e->getMessage()]);
         }
+        return view('user.index')->with(['status'=>'Операция по изменению данных прошла успешно','user'=>\App\Http\Middleware\User::getUser()]);
+    }
+
+    public function list(){
+        $auth = app('firebase.auth');
+        $list = $auth->listUsers($defaultMaxResults = 1000, $defaultBatchSize = 1000);
+        $users = array();
+        foreach ($list as $key => $value) {
+            $users[] = $value;
+        }
+        return view('user.list',compact('users'));
+    }
+
+    public function delete($id){
+        $auth = app('firebase.auth');
+        $removedResult = $auth->deleteUser($id);
+        return view('user.list')->with('status',TableController::processDataAction('user','removed',isset($removedResult)));
     }
 }

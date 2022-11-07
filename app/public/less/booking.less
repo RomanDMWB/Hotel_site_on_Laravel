@@ -1,4 +1,23 @@
 @import 'config.less';
+@import 'main.less';
+
+form{
+    width:@content-width;
+    margin: 1em auto;
+
+    .form-group{
+        margin-bottom:1em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width:@content-width;
+    }
+
+    .buttons{
+        margin: 1em auto;
+        justify-content: space-around;
+    }
+}
 
 .ticket-container{
     width:25em;

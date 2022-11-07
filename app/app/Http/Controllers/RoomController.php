@@ -82,7 +82,7 @@ class RoomController extends Controller
     public function getInfo($id){
         $room = TableController::getRooms($this->database,$id);
         if($room)
-        return view('room',compact('room'));
+        return view('room',compact('room','id'));
         else
         return view('error');
     }

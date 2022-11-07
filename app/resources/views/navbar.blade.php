@@ -2,15 +2,19 @@
 <?php
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\User;
-$admin = Admin::getAdmin();
-$user = User::getUser();
+$user = User::getUser(); 
+$admin = false;
+if($user){
+    $admin = new Admin();
+    $admin = $admin->getAdmin();
+}
  ?>
 <nav>
     @include('auth.login')
     @include('auth.register')
     <div class="auth-options">
         <div>
-            @if($admin||$user)
+            @if($user||$admin)
             <a href="{{ url('logout') }}" onclick="(function(e){if(!confirm('Вы точно хотите выйти?'))e.preventDefault();})(event)" id="log-out">Log out</a>
             <a href="{{ url('user/page') }}">{{$user->displayName}}</a>
             @else
@@ -27,11 +31,11 @@ $user = User::getUser();
                 <div class="company-icon"></div>
             </a>
             <ul class="nav-menu">
-                @if(!$admin)
+                @if(!$admin&&$user)
                 <li class="nav-item"><a href="{{ url('bookings') }}">Bookings</a></li>
                 @endif
                 <li class="nav-item"><a href="{{ url('/') }}">Home</a></li>
-                @if(Admin::getAdmin())
+                @if($admin)
                 <li class="nav-item"><a href="{{ url('admin') }}">Administration</a></li>
                 @endif
                 <li class="nav-item"><a href="{{ url('contacts') }}">Contacts</a></li>

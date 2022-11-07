@@ -1,6 +1,9 @@
 @extends('layouts.main_page_layout')
 
 @section('content')
+@if(isset($status))
+<p class="info">{{ $status }}</p>
+@endif
 <h1>User Info</h1>
 <form action="{{ url('user/save') }}" method="GET">
     @csrf

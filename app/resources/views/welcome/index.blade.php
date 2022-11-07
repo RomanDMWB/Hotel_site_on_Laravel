@@ -1,9 +1,6 @@
 @extends('layouts.main_page_layout')
 
 @section('content')
-@if(session('status'))
-<h4>{{ session('status') }}</h4>
-@endif
 <!-- Room categories content -->
 <div class="hotel-variants">
     <ul class="rooms">
@@ -43,7 +40,8 @@
 </div>
 <!-- Correct visible rooms -->
 <script>
-    document.querySelector('.rooms').style.gridTemplateColumns=`repeat(${document.querySelectorAll('.hotel-room').length},1fr)`
+    document.querySelector('.rooms').style.gridTemplateColumns = `repeat(${document.querySelectorAll('.hotel-room').length},1fr)`
+
 </script>
 <!-- Select panel & Search form content -->
 <div class="about-booking-form-container">
@@ -127,25 +125,26 @@
     const aboutContainerElement = document.querySelector('.about-container');
     const searchContainerElement = document.querySelector('.booking-container');
     const containerDisplayName = 'block';
-    searchContainerElement.style.display='none';
+    searchContainerElement.style.display = 'none';
     document.querySelector('.about').classList.add('active');
-    document.querySelectorAll('.select-group').forEach(button=>{
-        button.addEventListener('click',()=>{
-            if(button.classList.contains('active'))return;
+    document.querySelectorAll('.select-group').forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('active')) return;
             // Disappear all containers
-            aboutContainerElement.style.display='none';
-            searchContainerElement.style.display='none';
+            aboutContainerElement.style.display = 'none';
+            searchContainerElement.style.display = 'none';
             // Delete active format all control panel buttons
-            document.querySelectorAll('.select-group').forEach(button=>{
+            document.querySelectorAll('.select-group').forEach(button => {
                 button.classList.remove('active');
             });
             // Appear correct containers and show color in button
             button.classList.add('active');
-            if(button.classList.contains('about'))
+            if (button.classList.contains('about'))
                 aboutContainerElement.style.display = containerDisplayName;
-            if(button.classList.contains('booking'))
+            if (button.classList.contains('booking'))
                 searchContainerElement.style.display = containerDisplayName;
         })
     })
+
 </script>
 @endsection

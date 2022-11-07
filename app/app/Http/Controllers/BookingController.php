@@ -74,7 +74,7 @@ class BookingController extends Controller
         if($this->bookings)
             return view('user.bookings',['bookings'=>$this->getBookingInfo(null,true)]);
 
-        return view('welcome.index')->withErrors(['error'=>'У вас пока нет бронирований! Поэтому забронируйте номер']);
+        return back()->withErrors(['error'=>'У вас пока нет бронирований! Поэтому забронируйте номер']);
     }
     
     public function showBooking($id){
@@ -155,7 +155,8 @@ class BookingController extends Controller
     }
 
     public function formType($type){
-        return view('formType',compact('type'));
+        $name = $this->database->getReference('rooms')->getChild($type)->getValue()['name'];
+        return view('formType',compact('type','name'));
     }
 
     private function getCost($request,$cost){

@@ -16,9 +16,9 @@ $isContactPage = explode('/',$_SERVER['REQUEST_URI'])[1]==='contacts';
     @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='about')
     <link rel="stylesheet" type="text/less" href="{{ url('less/all/about.less') }}">
     @endif
-    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='user')
+    {{-- @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='user')
     <link rel="stylesheet" type="text/less" href="{{ url('less/all/user-page.less') }}">
-    @endif
+    @endif --}}
     @if($isContactPage)
     <link rel="stylesheet" type="text/less" href="{{ url('less/all/contacts.less') }}">
     @endif

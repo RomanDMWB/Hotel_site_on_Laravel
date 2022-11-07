@@ -1,0 +1,6 @@
+admin:
+admin@mail.com
+1234567890
+user:
+test1@test.test
+123456

@@ -2,7 +2,7 @@
 
 @section('content')
 {{-- {{ $bookings }} --}}
-@if(isset($bookings)&&$bookings!=="")
+@if(isset($bookings)&&$bookings!==[])
 <div class="bookings">
     <h1>Your's booking for hotel numbers</h1>
     @foreach($bookings as $key => $booking)

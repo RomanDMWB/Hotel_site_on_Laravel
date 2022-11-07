@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\User;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
@@ -21,27 +21,29 @@ Route::get('about',function(){
     $content = File::get('../resources/files/text.txt');
     return view('all.about',compact('content'));
 });
-Route::get('contacts',[User::class,'contacts']);
+Route::get('contacts',[UserController::class,'contacts']);
 Route::get('room/{id}',[RoomController::class,'getInfo']);
+Route::get('booking/form/{type}',[BookingController::class,'formType']);
 
 //Auth Routes
 Route::post('login',[AuthController::class,"login"]);
 Route::post('logup',[AuthController::class,"logup"]);
-Route::get('logout',[AuthController::class,'logout'])->middleware('user');
 
 //User Routes
 Route::group(['middleware'=>['user']],function(){
+    Route::get('logout',[AuthController::class,'logout']);
+    Route::get('user/page',[UserController::class,'page']);
     Route::get('bookings',[BookingController::class,'bookings']);
     Route::post('booking',[BookingController::class,'create']);
     Route::get('booking/{id}',[BookingController::class,'showBooking']);
-    Route::get('booking/form/{type}',[BookingController::class,'formType']);
-    Route::get('user/page',[User::class,'page']);
-    Route::get('user/save',[User::class,'save']);
+    Route::get('user/save',[UserController::class,'save']);
 });
 
 // Administration Routes
 Route::group(['middleware'=>['admin']],function(){
     Route::get('admin',[AdminController::class,'show'])->name('admin');
+    Route::get('admin/users',[UserController::class,'list']);
+    Route::get('admin/user/destroy/{id}',[UserController::class,'delete']);
     
     Route::put('admin/booking/update/{id}',[BookingController::class,'update']);
     Route::post('admin/booking/destroy/{id}',[BookingController::class,'destroy']);
