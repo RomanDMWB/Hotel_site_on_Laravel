@@ -1,12 +1,11 @@
 <!-- Навигационная панель -->
 <?php
-use App\Http\Middleware\Admin;
-use App\Http\Middleware\User;
-$user = User::getUser(); 
+use App\Http\Controllers\CookieController;
+$op = new CookieController();
+$user = $op->isUser();
 $admin = false;
 if($user){
-    $admin = new Admin();
-    $admin = $admin->getAdmin();
+$admin = $op->isAdmin();
 }
  ?>
 <nav>
@@ -16,7 +15,7 @@ if($user){
         <div>
             @if($user||$admin)
             <a href="{{ url('logout') }}" onclick="(function(e){if(!confirm('Вы точно хотите выйти?'))e.preventDefault();})(event)" id="log-out">Log out</a>
-            <a href="{{ url('user/page') }}">{{$user->displayName}}</a>
+            <a href="{{ url('user/page') }}">You</a>
             @else
             <input type="radio" name="auth" id="log-in" />
             <label for="log-in">Log in</label>

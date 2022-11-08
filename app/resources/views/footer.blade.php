@@ -1,5 +1,5 @@
 <footer>
-    @if(!$isContactPage)
+    @if(explode('/',$_SERVER['REQUEST_URI'])[1]!=='contacts')
     <div class="contact-list">
         <ul class="contacts">
             @foreach($contacts as $item)

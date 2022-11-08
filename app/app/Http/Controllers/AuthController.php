@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use DateInterval;
 use Kreait\Firebase\Contract\Auth;
 use Kreait\Firebase\Request\CreateUser;
 use Kreait\Firebase\Contract\Database;
@@ -25,18 +26,18 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
         try{
             $signResult = $this->auth->signInWithEmailAndPassword($request->email,$request->password);
+            $sessionCookie = $this->auth->createSessionCookie($signResult->idToken(),new DateInterval('P1W'));
+            setcookie('user',$sessionCookie);
+            return redirect('/');
         }
         catch(FailedToSignIn $e){
-            return back()->withErrors(['error'=>$e->getMessage()]);
+            return back()->withErrors(['error'=>"Ошибка при входе в систему"]);
         }
         catch(InvalidArgumentException $e){
             return back()->withErrors(['error'=>$e->getMessage()]);
         }
-        try {
-            setcookie('user',$this->auth->createSessionCookie($signResult->idToken(), new \DateInterval('P7D')));
-            return redirect('/');
-        } catch (FailedToCreateSessionCookie $e) {
-            echo $e->getMessage();
+        catch (FailedToCreateSessionCookie $e) {
+            return back()->withErrors(['error'=>"Ошибка при создании cookie"]);
         }
     }
 

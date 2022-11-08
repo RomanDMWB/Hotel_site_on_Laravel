@@ -1,27 +1,28 @@
-<?php 
-$isContactPage = explode('/',$_SERVER['REQUEST_URI'])[1]==='contacts';
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel</title>
+    @switch(explode('/',$_SERVER['REQUEST_URI'])[1])
+    @case('room')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/room.less') }}">
+    @break
+    @case('about')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/all/about.less') }}">
+    @break
+    @case('user')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/all/user-page.less') }}">
+    @break
+    @case('contacts')
+    <link rel="stylesheet" type="text/less" href="{{ url('less/all/contacts.less') }}">
+    @break
+    $@default
     @if($_SERVER['REQUEST_URI']==='/'||$_SERVER['REQUEST_URI']==='/welcome/error')
     <link rel="stylesheet" type="text/less" href="{{ url('less/welcome.less') }}">
     @endif
-    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='room')
-    <link rel="stylesheet" type="text/less" href="{{ url('less/room.less') }}">
-    @endif
-    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='about')
-    <link rel="stylesheet" type="text/less" href="{{ url('less/all/about.less') }}">
-    @endif
-    @if(explode('/',$_SERVER['REQUEST_URI'])[1]==='user')
-    <link rel="stylesheet" type="text/less" href="{{ url('less/all/user-page.less') }}">
-    @endif
-    @if($isContactPage)
-    <link rel="stylesheet" type="text/less" href="{{ url('less/all/contacts.less') }}">
-    @endif
+    @break
+    @endswitch
     @if($errors->any()||isset($error))
     <link rel="stylesheet" type="text/less" href="{{ url('less/error.less') }}">
     @endif

@@ -8,9 +8,10 @@ use Throwable;
 
 class UserController extends Controller
 {
-    private $database;
+    private $database,$cookie;
     public function __construct(Database $database){
         $this->database = $database;
+        $this->cookie = new CookieController();
     }
 
     public function contacts(){
@@ -19,18 +20,18 @@ class UserController extends Controller
     }
 
     public function page(){
-        $user = \App\Http\Middleware\User::getUser();
+        $user = $this->cookie->isUser();
         return view('user.index',compact('user'));
     }
 
     public function save(Request $request){
-        $user = \App\Http\Middleware\User::getUser();
+        $user = $this->cookie->isUser();
         $auth = app('firebase.auth');
         try{
             if($user->email != $request->email)
                 $auth->changeUserEmail($user->uid,$request->email);
             if($user->displayName != $request->displayName){
-                $updatedUser = $auth->updateUser($user->uid, ['displayName'=>$request->displayName]);
+                $auth->updateUser($user->uid, ['displayName'=>$request->displayName]);
             }
             if($request->password)
                 $auth->changeUserPassword($user->uid,$request->email);
